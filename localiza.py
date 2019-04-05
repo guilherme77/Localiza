@@ -1,7 +1,7 @@
 """
 Discipline: PROGRAMMING LANGUAGE APPLIED TO AUTOMATION. - LPAA
-Teacher: Lucas Ponciano
-Students: Guilherme Barros
+Teacher: João Fausto Lorenzato de Oliveira
+Students: Guilherme Barros, Lukas Ponciano
 
 Project of a system that performs registration, rent or sale to a car rental company in python.
 
