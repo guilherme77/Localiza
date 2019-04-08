@@ -19,8 +19,7 @@ lst_perfispendentes = [['ID', 'Nome', 'Login', 'Senha', 'CPF', 'idade', 'datanas
 lst_funcionarios = [['ID', 'Nome', 'Login', 'Senha', 'CPF', 'idade', 'datanasc']]
 lst_gerentes = [['ID', 'Nome', 'Login', 'Senha', 'CPF', 'idade', 'datanasc']]
 lst_usuarios = [lst_gerentes ,lst_clientes, lst_funcionarios]
-
-tp_tarifasdiarias = (1,2,3)
+lst_tarifasdiarias = [1,2,3]
 
 # Funcoes e resto do codigo
 
