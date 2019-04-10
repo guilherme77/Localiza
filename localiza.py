@@ -14,6 +14,7 @@ tag = True
 
 # Variaveis globais
 from datetime import datetime
+from time import sleep
 
 logadm = ['admin']
 keyadm = ['54321']
@@ -59,13 +60,12 @@ def opcoes_iniciais():
             #problema de range...
     elif entrada_inicial=='4':
         print('Finalizando...')
-        
+        sleep(2)
+        print('Programa encerrado, Volte sempre!!!')  
     else:
         print ('Opção invalida!!')
         
     return 0
-
-print('Programa encerrado, Volte sempre!!!')
 
 def realizar_cadastro():
     lst_perguntas = ['\nNome: ', '\nCPF: ', '\nIdade: ', '\nData de nascimento: ', '\nLogin desejado: ', '\nSenha escolhida: ']
