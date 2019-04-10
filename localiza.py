@@ -45,7 +45,7 @@ def inicia_sistema():
     while(tag):
         opcoes_iniciais()
         x += 1
-        if x==1:
+        if x==2:
             break
 
 def opcoes_iniciais():
@@ -56,11 +56,9 @@ def opcoes_iniciais():
         entrada_inicial = raw_input('Opcoes do sistema.\n[1] Login \n[2] Realizar cadastro \n[3] Teste admin \n[4] EXIT\n')
     
     if entrada_inicial=='1':
-        print('o sport ta na final')
-        
+        print('o sport ta na final')       
     elif entrada_inicial=='2':
          realizar_cadastro()
-         
     elif entrada_inicial=='3':
             admin()
             #problema de range...
@@ -71,19 +69,28 @@ def opcoes_iniciais():
     else:
         print ('Opção invalida!!')
         
-    return 0
+    return 
 
 def realizar_cadastro():
-    lst_perguntas = ['\nNome: ', '\nCPF: ', '\nIdade: ', '\nData de nascimento: ', '\nLogin desejado: ', '\nSenha escolhida: ']
+    lst_perguntas = ['ID','\nNome: ', '\nCPF: ','\nData de nascimento: ', 'idade', '\nLogin desejado: ', '\nSenha escolhida: ']
     lst_dados = []
     x = 0
     
     print('\nEntrada de dados para cadastro. Responda conforme o que for pedido:')
-    while(x<6):
-        entrada_dados = raw_input('%s' %(lst_perguntas[x]))
+    while(x<7):
+        if x==0:
+            entrada_dados = gera_id_user()
+        elif x==4:
+            entrada_dados = gera_idade(lst_dados[3])
+        else:
+            entrada_dados = raw_input('%s' %(lst_perguntas[x]))
         lst_dados.append(entrada_dados)
-        x+=1
-    print(lst_dados)
+        x = x+1
+        
+    print('Fim do cadastro!\n')
+    armazena(lst_dados, 1)
+    
+#    print(lst_dados)
     
     return
 
