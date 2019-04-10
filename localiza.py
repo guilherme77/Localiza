@@ -125,6 +125,30 @@ def gera_idade(data_nasc):
             
     return idade
 
+def exibe():
+    dict_sistema = {}
+    lst_exibe = []
+    lst_infos_tab = ['ID', 'Nome', 'CPF', 'Data de nasc', 'Idade', 'Login', 'Senha', 'Perfil', 'Dívida']
+    tag = True
+    k=0
+
+    while(tag):
+        for x in lst_usuarios:       
+            for y in x:
+                lst_exibe.append(y[k])
+                print lst_exibe
+                
+                dict_sistema[lst_infos_tab[k]] = lst_exibe
+                print lst_infos_tab[k]
+    
+        if k==len(lst_infos_tab)-1:
+            tag = False
+        k+=1
+        lst_exibe = []
+
+    frame = pd.DataFrame(dict_sistema)
+    print frame  
+
 def admin():
     
     user = input('Usuário: ')
