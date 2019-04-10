@@ -101,6 +101,16 @@ def armazena(info, x):
 
   return
 
+def gera_id_user():
+  while(1):
+    id_user = rd.randint(2,10)
+    if not id_user in lst_ids_ativos:
+      break
+
+  lst_ids_ativos.append(id_user)
+
+  return id_user
+
 def gera_idade(data_nasc):
     idade = 0
     while (idade < 0):
