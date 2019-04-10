@@ -13,6 +13,10 @@ initiation of the program...
 tag = True
 
 # Variaveis globais
+from datetime import datetime
+
+logadm = ['admin']
+keyadm = ['54321']
 
 lst_clientes = [['ID', 'Nome','CPF', 'idade', 'datanasc', 'Login', 'Senha', 'divida_com_a_empresa']]
 lst_perfispendentes = [['ID', 'Nome','CPF', 'idade', 'datanasc']]
@@ -39,17 +43,29 @@ def inicia_sistema():
 
 def opcoes_iniciais():
     entrada_inicial = 0
-    tp_entrada = ('1','2')
+    tp_entrada = ('1','2','3','4')
     
     while(entrada_inicial not in tp_entrada):
-        entrada_inicial = raw_input('Opcoes do sistema. Digite: 1 para logar ou 2 para realizar cadastro\n')
+        entrada_inicial = raw_input('Opcoes do sistema.\n[1] Login \n[2] Realizar cadastro \n[3] Teste admin \n[4] EXIT\n')
     
     if entrada_inicial=='1':
         print('o sport ta na final')
+        
+    elif entrada_inicial=='2':
+         realizar_cadastro()
+         
+    elif entrada_inicial=='3':
+            admin()
+            #problema de range...
+    elif entrada_inicial=='4':
+        print('Finalizando...')
+        
     else:
-        realizar_cadastro()
+        print ('Opção invalida!!')
         
     return 0
+
+print('Programa encerrado, Volte sempre!!!')
 
 def realizar_cadastro():
     lst_perguntas = ['\nNome: ', '\nCPF: ', '\nIdade: ', '\nData de nascimento: ', '\nLogin desejado: ', '\nSenha escolhida: ']
@@ -64,7 +80,32 @@ def realizar_cadastro():
     print(lst_dados)
     
     return
+
+def gera_idade(data_nasc):
+    idade = 0
+    while (idade < 0):
+        if data_nasc > datetime.now().year:
+            print ('Voce nasceu no futuro?')
+            continue
+        if data_nasc < 1900:
+            print ('Nao e possivel calcular para antes de 1900, você não pode ser tão old')
+            continue
+        else:
+            idade = datetime.now().year - data_nasc
+            
+    return idade
+
+def admin():
     
+    user = input('Usuário: ')
+    while not user in logadm:
+        user = input ('Usuário não existe: ')
+    
+    key = input ('Senha: ')
+    while not key in keyadm:
+        key = input ('Senha incorreta: ')
+        
+    return
 ##    lst_perfispendente.append(lst_dados) aparentemente só funciona com a lista passando como parâmetro
         
 main()
