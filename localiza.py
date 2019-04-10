@@ -7,22 +7,28 @@ Project of a system that performs registration, rent or sale to a car rental com
 
 initiation of the program...
 """
+# imports
+
+import random as rd 
+import pandas as pd
+
+from datetime import datetime
+from time import sleep
 
 # Tags
 
 tag = True
 
 # Variaveis globais
-from datetime import datetime
-from time import sleep
 
 logadm = ['admin']
 keyadm = ['54321']
 
-lst_clientes = [['ID', 'Nome','CPF', 'idade', 'datanasc', 'Login', 'Senha', 'divida_com_a_empresa']]
-lst_perfispendentes = [['ID', 'Nome','CPF', 'idade', 'datanasc']]
-lst_funcionarios = [['ID', 'Nome','CPF', 'idade', 'datanasc', 'Login', 'Senha']]
-lst_gerentes = [['ID', 'Nome','CPF', 'idade', 'datanasc', 'Login', 'Senha']]
+lst_ids_ativos = [1]
+lst_clientes = []
+lst_perfispendentes = []
+lst_funcionarios = []
+lst_gerentes = []
 lst_usuarios = [lst_gerentes ,lst_clientes, lst_funcionarios]
 lst_tarifasdiarias = [1,2,3]
 
