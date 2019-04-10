@@ -94,6 +94,13 @@ def realizar_cadastro():
     
     return
 
+def armazena(info, x):
+  if x==1:
+    lst_perfispendentes.append(info)
+    print(lst_perfispendentes)
+
+  return
+
 def gera_idade(data_nasc):
     idade = 0
     while (idade < 0):
