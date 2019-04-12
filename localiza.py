@@ -72,13 +72,36 @@ def opcoes_iniciais():
     return 
 
 def fazer_login():
+    tp_opcao = ('y','n')
+    opcao = 'k'
+    
     nome_usuario = raw_input("Digite o seu nome de usuario: ")
     senha_usuario = raw_input("Digite sua senha: ")
     print("\nVerificando sistema ...")
     
-    checa_login(nome_usuario,senha_usuario)
+    chave = checa_login(nome_usuario,senha_usuario)
     
-    return 
+    if chave==1:
+        verifica_perfil()
+    else:
+        while(opcao not in tp_opcao):    
+            opcao = raw_input("Algo deu errado. Deseja tentar logar novamente? y ou n")
+        if opcao=='y':
+            fazer_login()
+    return   
+
+def checa_login(username, password):
+    
+    for x in lst_usuarios:
+        for y in x:
+            if y[5]==username:
+                if y[6]==password:
+                    return 1
+                else:
+                    return 2
+                
+def verifica_perfil():
+    return   
 
 def realizar_cadastro():
     lst_perguntas = ['ID','\nNome: ', '\nCPF: ','\nData de nascimento: ', 'idade', '\nLogin desejado: ', '\nSenha escolhida: ']
