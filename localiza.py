@@ -56,7 +56,7 @@ def opcoes_iniciais():
         entrada_inicial = raw_input('Opcoes do sistema.\n[1] Login \n[2] Realizar cadastro \n[3] Teste admin \n[4] EXIT\n')
     
     if entrada_inicial=='1':
-        print('o sport ta na final')       
+        fazer_login()       
     elif entrada_inicial=='2':
          realizar_cadastro()
     elif entrada_inicial=='3':
@@ -69,6 +69,15 @@ def opcoes_iniciais():
     else:
         print ('Opção invalida!!')
         
+    return 
+
+def fazer_login():
+    nome_usuario = raw_input("Digite o seu nome de usuario: ")
+    senha_usuario = raw_input("Digite sua senha: ")
+    print("\nVerificando sistema ...")
+    
+    checa_login(nome_usuario,senha_usuario)
+    
     return 
 
 def realizar_cadastro():
