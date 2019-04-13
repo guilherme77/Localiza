@@ -101,7 +101,25 @@ def checa_login(username, password):
                     return 2
                 
 def verifica_perfil():
-    return   
+    
+    for x in lst_usuarios:
+        for y in x:
+            if y[7]=='gerente':
+                func_gerente()
+            elif y[7]=='funcionario':
+                func_funcionario()
+            elif y[7]=='cliente':
+                func_cliente()   
+    return                
+
+def func_gerente():
+    return
+
+def func_funcionario():
+    return
+
+def func_cliente():
+    return
 
 def realizar_cadastro():
     lst_perguntas = ['ID','\nNome: ', '\nCPF: ','\nData de nascimento: ', 'idade', '\nLogin desejado: ', '\nSenha escolhida: ']
