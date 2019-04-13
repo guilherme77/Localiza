@@ -28,7 +28,7 @@ lst_ids_ativos = [1]
 lst_clientes = []
 lst_perfispendentes = []
 lst_funcionarios = []
-lst_gerentes = []
+lst_gerentes = [[1, 'Carlos Muniz', '86541235509', '29071980', 38, 'carlos_ger', 'iokA12', 'gerente']]
 lst_usuarios = [lst_gerentes ,lst_clientes, lst_funcionarios]
 lst_tarifasdiarias = [1,2,3]
 
@@ -113,6 +113,17 @@ def verifica_perfil():
     return                
 
 def func_gerente():
+    opcao_ger = 0
+    tp_libera = (1)
+    
+    while(opcao_ger not in tp_libera):
+        opcao_ger = raw_input('Gerente logando, o que deseja?\n[1] Cadastrar alguem')
+    
+    if opcao_ger==1:
+        realizar_cadastro()
+    
+    func_gerente()
+   
     return
 
 def func_funcionario():
