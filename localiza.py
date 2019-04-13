@@ -114,22 +114,69 @@ def verifica_perfil():
 
 def func_gerente():
     opcao_ger = 0
-    tp_libera = (1)
+    tp_libera = ('1','2')
     
     while(opcao_ger not in tp_libera):
-        opcao_ger = raw_input('Gerente logando, o que deseja?\n[1] Cadastrar alguem')
+        opcao_ger = raw_input('Gerente logando, o que deseja?\n[1] Cadastrar alguem \n[2] Ativar cadastro\n')
     
-    if opcao_ger==1:
+    if opcao_ger=='1':
         realizar_cadastro()
+    if opcao_ger=='2':
+        ativar_cadastro()
     
     func_gerente()
-   
+    
     return
 
 def func_funcionario():
     return
 
 def func_cliente():
+    return
+
+def ativar_cadastro():
+    ativar_quem = 0
+    qual_perfil = 0
+    tp_libera = range(1,len(lst_perfispendentes)+1)
+    tp_libera2 = ('1','2','3')
+    print("Os usuarios com perfis pendentes sao: \n")
+    
+    for x in lst_perfispendentes:
+        print(x)
+        print('\n')
+    
+    while((int(ativar_quem)) not in tp_libera):
+        ativar_quem = raw_input("Quem deseja adicionar? Cada opcao eh um inteiro que vai de 1 ate o maximo disponivel\n")
+    
+    while(qual_perfil not in tp_libera2):
+        print("\nVoce escolheu adicionar o usuario", lst_perfispendentes[(int(ativar_quem))-1])        
+        qual_perfil = raw_input("A qual perfil ele pertence?\n[1]Gerente \n[2]Funcionario \n[3]Cliente\n")
+        
+    if qual_perfil=='1':
+        perfil = 'gerente'
+    elif qual_perfil=='2':
+        perfil = 'funcionario'
+    elif qual_perfil=='3':
+        perfil = 'cliente'
+    
+    for x in lst_perfispendentes:
+        if x==lst_perfispendentes[(int(ativar_quem))-1]:
+            delete = x
+            x.append(perfil)
+            if perfil=='gerente':
+                lst_gerentes.append(x)
+                print('\n', lst_gerentes)
+            elif perfil=='funcionario':
+                lst_funcionarios.append(x)
+                print('\n', lst_funcionarios)
+            elif perfil=='cliente':
+                lst_funcionarios.append(x)
+                print('\n', lst_clientes)
+            
+    lst_perfispendentes.remove(delete)      
+    print('olha os pendentes', lst_perfispendentes)
+    print("\nSistema atualizado!\n")
+        
     return
 
 def realizar_cadastro():
