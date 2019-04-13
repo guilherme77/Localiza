@@ -162,17 +162,26 @@ def gera_id_user():
   return id_user
 
 def gera_idade(data_nasc):
-    idade = 0
-    while (idade < 0):
-        if data_nasc > datetime.now().year:
-            print ('Voce nasceu no futuro?')
-            continue
-        if data_nasc < 1900:
-            print ('Nao e possivel calcular para antes de 1900, você não pode ser tão old')
-            continue
-        else:
-            idade = datetime.now().year - data_nasc
-            
+    
+    dia_nasc = int(data_nasc[0:2])
+    mes_nasc = int(data_nasc[2:4])
+    ano_nasc = int(data_nasc[4::])
+#    print('dia', dia_nasc)
+#    print('mes', mes_nasc)
+#    print('ano', ano_nasc)
+    
+    if ano_nasc > (datetime.now().year+100):
+        print ('Voce nasceu no futuro?')
+    elif ano_nasc < 1900:
+        print ('Nao e possivel calcular para antes de 1900, você não pode ser tão old')
+    else:
+        idade = datetime.now().year - ano_nasc
+        if datetime.now().month < mes_nasc:
+            idade = idade - 1
+        elif datetime.now().month == mes_nasc:
+            if datetime.now().day > dia_nasc:
+                idade = idade - 1
+                
     return idade
 
 def exibe():
