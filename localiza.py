@@ -52,6 +52,8 @@ def opcoes_iniciais():
     entrada_inicial = 0
     tp_entrada = ('1','2','3','4')
     
+    iniciar_banco_dados()
+    
     while(entrada_inicial not in tp_entrada):
         entrada_inicial = raw_input('Opcoes do sistema.\n[1] Login \n[2] Realizar cadastro \n[3] Teste admin \n[4] EXIT\n')
     
@@ -70,6 +72,83 @@ def opcoes_iniciais():
         print ('Opção invalida!!')
         
     return 
+
+def iniciar_banco_dados(): #essa funcao tambem devera atualizar estoques, situacao de alugueis e etc
+    # gerente
+    arq = open('gerente_dados.txt', 'r')
+    linha = arq.readlines()
+    lst_add = []
+    k=0
+
+    for x in linha:
+        if k==0:
+            lst_add.append((int(x)))
+        elif k==4:
+            lst_add.append((int(x)))
+        else:
+            new = x.replace(x, x[:-1])
+            lst_add.append(new)
+        k = k+1
+        if(len(lst_add)==8):
+            lst_gerentes.append(lst_add)
+            k=0
+            lst_add = []
+ 
+    #    print(lst_gerentes)
+
+    arq.close()
+    
+    # funcionarios
+    
+    arq = open('funcionarios_dados.txt', 'r')
+    linha = arq.readlines()
+    lst_add = []
+    k=0
+
+    for x in linha:
+        if k==0:
+            lst_add.append((int(x)))
+        elif k==4:
+            lst_add.append((int(x)))
+        else:
+            new = x.replace(x, x[:-1])
+            lst_add.append(new)
+        k = k+1
+        if(len(lst_add)==8):
+            lst_funcionarios.append(lst_add)
+            k=0
+            lst_add = []
+ 
+    #    print(lst_funcionarios)
+
+    arq.close()
+
+     # clientes
+        
+    arq = open('cliente_dados.txt', 'r')
+    linha = arq.readlines()
+    lst_add = []
+    k=0
+
+    for x in linha:
+        if k==0:
+            lst_add.append((int(x)))
+        elif k==4:
+            lst_add.append((int(x)))
+        else:
+            new = x.replace(x, x[:-1])
+            lst_add.append(new)
+        k = k+1
+        if(len(lst_add)==8):
+            lst_clientes.append(lst_add)
+            k=0
+            lst_add = []
+ 
+    #    print(lst_clientes)
+
+    arq.close()
+    
+    return
 
 def fazer_login():
     tp_opcao = ('y','n')
