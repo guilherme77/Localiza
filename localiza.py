@@ -164,14 +164,11 @@ def ativar_cadastro():
             delete = x
             x.append(perfil)
             if perfil=='gerente':
-                lst_gerentes.append(x)
-                print('\n', lst_gerentes)
+                armazena(x, 2)
             elif perfil=='funcionario':
-                lst_funcionarios.append(x)
-                print('\n', lst_funcionarios)
+                armazena(x,3)
             elif perfil=='cliente':
-                lst_funcionarios.append(x)
-                print('\n', lst_clientes)
+                armazena(x,4)
             
     lst_perfispendentes.remove(delete)      
     print('olha os pendentes', lst_perfispendentes)
@@ -203,17 +200,26 @@ def realizar_cadastro():
     return
 
 def armazena(info, x):
-  if x==1:
-    lst_perfispendentes.append(info)
-    print(lst_perfispendentes)
+    if x==1:
+        lst_perfispendentes.append(info)
+        print(lst_perfispendentes)
+    elif x==2:
+        lst_gerentes.append(info)
+        print('\n', lst_gerentes)
+    elif x==3:
+        lst_funcionarios.append(info)
+        print('\n', lst_funcionarios)
+    elif x==4:
+        lst_funcionarios.append(info)
+        print('\n', lst_clientes)
 
-  return
+    return
 
 def gera_id_user():
-  while(1):
-    id_user = rd.randint(2,10)
-    if not id_user in lst_ids_ativos:
-      break
+    while(1):
+        id_user = rd.randint(2,10)
+        if not id_user in lst_ids_ativos:
+            break
 
   lst_ids_ativos.append(id_user)
 
