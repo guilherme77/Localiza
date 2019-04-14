@@ -169,6 +169,8 @@ def ativar_cadastro():
                 armazena(x,3)
             elif perfil=='cliente':
                 armazena(x,4)
+                
+    lst_ids_ativos.remove(delete[0])
             
     lst_perfispendentes.remove(delete)      
     print('olha os pendentes', lst_perfispendentes)
