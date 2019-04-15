@@ -220,15 +220,19 @@ def verifica_perfil():
 
 def func_gerente():
     opcao_ger = 0
-    tp_libera = ('1','2')
+    tp_libera = ('1','2','3','4')
     
     while(opcao_ger not in tp_libera):
-        opcao_ger = raw_input('Gerente logando, o que deseja?\n[1] Cadastrar alguem \n[2] Ativar cadastro\n')
+        opcao_ger = raw_input('Gerente logado, o que deseja?\n[1] Cadastrar alguem \n[2] Ativar cadastro\n[3] Buscar usuario\n[4] Verificar estoque\n')
     
     if opcao_ger=='1':
         realizar_cadastro()
-    if opcao_ger=='2':
+    elif opcao_ger=='2':
         ativar_cadastro()
+    elif opcao_ger=='3':
+        buscar_usuario()
+    elif opcao_ger=='4':
+        verificar_estoque()
     
     func_gerente()
     
@@ -304,6 +308,27 @@ def realizar_cadastro():
     armazena(lst_dados, 1)
     
 #    print(lst_dados)
+    
+    return
+
+def buscar_usuario():
+    ok = 0
+    nome_user = raw_input("\nDigite o login do usuario que deseja localizar: \n")
+    
+    for x in lst_usuarios:
+        for y in x:
+            if y[5]==nome_user:
+                print("\nUsuario '%s' encontrado " %(nome_user), y)
+                ok = 1
+                for z in lst_dividas:
+                    if nome_user==z[0]:
+                        print('\nO usuario possui dividas coma empresa: ')
+                        print('Usuario: ', z[0], '\nDiarias: ', z[1], '\nMultas: ', z[2])
+                    else:
+                        print("\nO usuario nao possui dividas com a empresa.\n")
+                        
+    if ok==0:
+        print("\nDesculpe, mas o usuario '%s' nao consta no sistema!\n" %(nome_user))
     
     return
 
