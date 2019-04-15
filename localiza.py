@@ -28,9 +28,11 @@ lst_ids_ativos = [1]
 lst_clientes = []
 lst_perfispendentes = []
 lst_funcionarios = []
-lst_gerentes = [[1, 'Carlos Muniz', '86541235509', '29071980', 38, 'carlos_ger', 'iokA12', 'gerente']]
+lst_gerentes = []
 lst_usuarios = [lst_gerentes ,lst_clientes, lst_funcionarios]
 lst_tarifasdiarias = [1,2,3]
+lst_dividas = []
+lst_estoque = []
 
 # Funcoes e resto do codigo
 
@@ -145,6 +147,31 @@ def iniciar_banco_dados(): #essa funcao tambem devera atualizar estoques, situac
             lst_add = []
  
     #    print(lst_clientes)
+
+    arq.close()
+    
+    # alugueis
+    
+    arq = open('alugueis_dados.txt', 'r')
+    linha = arq.readlines()
+    lst_add = []
+    k=0
+
+    for x in linha:
+        if k==1:
+            lst_add.append((int(x)))
+        elif k==2:
+            lst_add.append((int(x)))
+        else:
+            new = x.replace(x, x[:-1])
+            lst_add.append(new)
+        k = k+1
+        if(len(lst_add)==4):
+            lst_dividas.append(lst_add)
+            k=0
+            lst_add = []
+ 
+    #    print(lst_dividas)
 
     arq.close()
     
