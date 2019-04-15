@@ -332,6 +332,14 @@ def buscar_usuario():
     
     return
 
+def verificar_estoque():
+    print("\nEstoque atualizado: ")
+    print("\n\tModelos SUV [ID 001]: ", lst_estoque[0])
+    print("\n\tModelos Sedan [ID 002]: ", lst_estoque[1])
+    print("\n\tModelos Hatch [ID 003]: ", lst_estoque[0])
+        
+    return
+
 def armazena(info, x):
     if x==1:
         lst_perfispendentes.append(info)
