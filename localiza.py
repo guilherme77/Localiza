@@ -21,9 +21,6 @@ tag = True
 
 # Variaveis globais
 
-logadm = ['admin']
-keyadm = ['54321']
-
 lst_ids_ativos = [1]
 lst_clientes = []
 lst_perfispendentes = []
@@ -52,21 +49,18 @@ def inicia_sistema():
 
 def opcoes_iniciais():
     entrada_inicial = 0
-    tp_entrada = ('1','2','3','4')
+    tp_entrada = ('1','2','3')
     
     iniciar_banco_dados()
     
     while(entrada_inicial not in tp_entrada):
-        entrada_inicial = raw_input('Opcoes do sistema.\n[1] Login \n[2] Realizar cadastro \n[3] Teste admin \n[4] EXIT\n')
+        entrada_inicial = raw_input('Opcoes do sistema.\n[1] Login \n[2] Realizar cadastro \n[3] EXIT\n')
     
     if entrada_inicial=='1':
         fazer_login()       
     elif entrada_inicial=='2':
          realizar_cadastro()
     elif entrada_inicial=='3':
-            admin()
-            #problema de range...
-    elif entrada_inicial=='4':
         print('Finalizando...')
         sleep(2)
         print('Programa encerrado, Volte sempre!!!')  
@@ -353,7 +347,9 @@ def armazena(info, x):
     elif x==4:
         lst_funcionarios.append(info)
         print('\n', lst_clientes)
-
+    
+    atualizar_banco()
+        
     return
 
 def gera_id_user():
@@ -413,17 +409,63 @@ def exibe():
     frame = pd.DataFrame(dict_sistema)
     print frame  
 
-def admin():
+def exibe():
+    dict_sistema = {}
+    lst_exibe = []
+    lst_infos_tab = ['ID', 'Nome', 'CPF', 'Data de nasc', 'Idade', 'Login', 'Senha', 'Perfil', 'Dívida']
+    tag = True
+    k=0
+
+    while(tag):
+        for x in lst_usuarios:       
+            for y in x:
+                lst_exibe.append(y[k])
+                print lst_exibe
+                
+                dict_sistema[lst_infos_tab[k]] = lst_exibe
+                print lst_infos_tab[k]
     
-    user = input('Usuário: ')
-    while not user in logadm:
-        user = input ('Usuário não existe: ')
+        if k==len(lst_infos_tab)-1:
+            tag = False
+        k+=1
+        lst_exibe = []
+
+    frame = pd.DataFrame(dict_sistema)
+    print frame  
+
+def atualizar_banco():
+    arq = open('gerente_dados.txt', 'w')
+
+    for x in lst_gerentes:
+        for y in x:
+            arq.writelines((str(y))+'\n')    
+
+    arq.close()
     
-    key = input ('Senha: ')
-    while not key in keyadm:
-        key = input ('Senha incorreta: ')
-        
+    arq = open('funcionarios_dados.txt', 'w')
+
+    for x in lst_funcionarios:
+        for y in x:
+            arq.writelines((str(y))+'\n')    
+
+    arq.close()
+    
+    arq = open('cliente_dados.txt', 'w')
+
+    for x in lst_clientes:
+        for y in x:
+            arq.writelines((str(y))+'\n')    
+
+    arq.close()
+    
+    arq = open('alugueis_dados.txt', 'w')
+
+    for x in lst_dividas:
+        for y in x:
+            arq.writelines((str(y))+'\n')    
+
+    arq.close()
+    
     return
-##    lst_perfispendente.append(lst_dados) aparentemente só funciona com a lista passando como parâmetro
         
 main()
