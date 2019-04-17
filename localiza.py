@@ -42,16 +42,17 @@ def main():
 def inicia_sistema():
     x = 0 # variavel provisoria, apenas para nao estourar o while
     while(tag):
-        opcoes_iniciais()
+        opcoes_iniciais(x)
         x += 1
         if x==2:
             break
 
-def opcoes_iniciais():
+def opcoes_iniciais(x):
     entrada_inicial = 0
     tp_entrada = ('1','2','3')
     
-    iniciar_banco_dados()
+    if(x==0):
+        iniciar_banco_dados()
     
     while(entrada_inicial not in tp_entrada):
         entrada_inicial = raw_input('Opcoes do sistema.\n[1] Login \n[2] Realizar cadastro \n[3] EXIT\n')
@@ -79,6 +80,7 @@ def iniciar_banco_dados(): #essa funcao tambem devera atualizar estoques, situac
     for x in linha:
         if k==0:
             lst_add.append((int(x)))
+            lst_ids_ativos.append((int(x))
         elif k==4:
             lst_add.append((int(x)))
         else:
@@ -104,6 +106,7 @@ def iniciar_banco_dados(): #essa funcao tambem devera atualizar estoques, situac
     for x in linha:
         if k==0:
             lst_add.append((int(x)))
+            lst_ids_ativos.append((int(x))
         elif k==4:
             lst_add.append((int(x)))
         else:
@@ -129,6 +132,7 @@ def iniciar_banco_dados(): #essa funcao tambem devera atualizar estoques, situac
     for x in linha:
         if k==0:
             lst_add.append((int(x)))
+            lst_ids_ativos.append((int(x))
         elif k==4:
             lst_add.append((int(x)))
         else:
