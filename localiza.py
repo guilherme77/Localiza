@@ -28,7 +28,7 @@ lst_funcionarios = []
 lst_gerentes = []
 lst_usuarios = [lst_gerentes ,lst_clientes, lst_funcionarios]
 lst_tarifasdiarias = [1,2,3]
-lst_dividas = []
+lst_dividas = [] # cada item sera uma sublista com indices ID, ID do modelo alugado, data de aluguel, diaria em divida, possiveis multas
 lst_estoque = []
 
 # Funcoes e resto do codigo
@@ -45,6 +45,7 @@ def inicia_sistema():
         opcoes_iniciais(x)
         x += 1
         if x==2:
+            atualizar_banco()
             break
 
 def opcoes_iniciais(x):
@@ -233,10 +234,10 @@ def verifica_perfil():
 
 def func_gerente():
     opcao_ger = 0
-    tp_libera = ('1','2','3','4')
+    tp_libera = ('1','2','3','4', '5', '156')
     
     while(opcao_ger not in tp_libera):
-        opcao_ger = raw_input('Gerente logado, o que deseja?\n[1] Cadastrar alguem \n[2] Ativar cadastro\n[3] Buscar usuario\n[4] Verificar estoque\n')
+        opcao_ger = raw_input('Gerente logado, o que deseja?\n[1] Cadastrar alguem \n[2] Ativar cadastro\n[3] Buscar usuario\n[4] Verificar estoque\n[5] Deletar usuario\n[156] Deslogar\n')
     
     if opcao_ger=='1':
         realizar_cadastro()
@@ -246,8 +247,11 @@ def func_gerente():
         buscar_usuario()
     elif opcao_ger=='4':
         verificar_estoque()
+    elif opcao_ger=='5':
+        deletar_usuario()
     
-    func_gerente()
+    if opcao_ger!='156':
+        func_gerente()
     
     return
 
@@ -334,7 +338,7 @@ def buscar_usuario():
                 for z in lst_dividas:
                     if nome_user==z[0]:
                         print('\nO usuario possui dividas coma empresa: ')
-                        print('Usuario: ', z[0], '\nDiarias: ', z[1], '\nMultas: ', z[2])
+                        print('Usuario: ', z[0], '\nDiarias: ', z[3], '\nMultas: ', z[4])
                     else:
                         print("\nO usuario nao possui dividas com a empresa.\n")
                         
@@ -347,10 +351,32 @@ def verificar_estoque():
     print("\nEstoque atualizado: ")
     print("\n\tModelos SUV [ID 001]: ", lst_estoque[0])
     print("\n\tModelos Sedan [ID 002]: ", lst_estoque[1])
-    print("\n\tModelos Hatch [ID 003]: ", lst_estoque[0])
+    print("\n\tModelos Hatch [ID 003]: ", lst_estoque[2])
         
     return
 
+def deletar_usuario():
+    exibe()
+   
+    quem_del = '0'
+    
+    while(quem_del not in lst_ids_ativos):
+        quem_del = raw_input('\nDigite o id do usuario que deseja apagar do sistema: ')
+        
+    for x in lst_dividas:
+        for y in x:
+            if y[0]==(int(quem_del)):
+                print('O usuario escolhido possui dividas com a empresa. Nao eh possivel apaga-lo\n')
+                print(y)
+            else:
+                print('Usuario encontrado. Nao possui dividas pendentes. Apagando ...\n')
+                for z in lst_usuarios:
+                    for w in z:
+                        if w[0]==y[0]:
+                            lst_ids_ativos.remove(w[0])
+                            z.remove(w)                                           
+    return                                  
+                                  
 def armazena(info, x):
     if x==1:
         lst_perfispendentes.append(info)
