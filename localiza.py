@@ -265,7 +265,6 @@ def ativar_cadastro():
     
     for x in lst_perfispendentes:
         if x==lst_perfispendentes[(int(ativar_quem))-1]:
-            delete = x
             x.append(perfil)
             if perfil=='gerente':
                 armazena(x, 2)
@@ -273,10 +272,9 @@ def ativar_cadastro():
                 armazena(x,3)
             elif perfil=='cliente':
                 armazena(x,4)
-                
-    lst_ids_ativos.remove(delete[0])
-            
-    lst_perfispendentes.remove(delete)      
+            lst_ids_ativos.append(x[0])
+            lst_perfispendentes.remove(x)  
+                      
     print('olha os pendentes', lst_perfispendentes)
     print("\nSistema atualizado!\n")
         
