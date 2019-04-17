@@ -169,6 +169,21 @@ def iniciar_banco_dados(): #essa funcao tambem devera atualizar estoques, situac
 
     arq.close()
     
+    # estoque
+    
+    arq = open('estoque_dados.txt', 'r')
+    linha = arq.readlines()
+    lst_add = []
+    k=0
+
+    for x in linha:
+        lst_estoque.append((int(x)))
+        k = k+1
+ 
+    #    print(lst_estoque)
+
+    arq.close()
+    
     return
 
 def fazer_login():
@@ -272,7 +287,7 @@ def ativar_cadastro():
                 armazena(x,3)
             elif perfil=='cliente':
                 armazena(x,4)
-            lst_ids_ativos.append(x[0])
+#            lst_ids_ativos.append(x[0]) 'tirando duvidas quanto a essa linha'
             lst_perfispendentes.remove(x)  
                       
     print('olha os pendentes', lst_perfispendentes)
@@ -408,6 +423,9 @@ def exibe():
     print frame  
 
 def atualizar_banco():
+    
+    # gerente
+    
     arq = open('gerente_dados.txt', 'w')
 
     for x in lst_gerentes:
@@ -424,6 +442,8 @@ def atualizar_banco():
 
     arq.close()
     
+    # cliente
+    
     arq = open('cliente_dados.txt', 'w')
 
     for x in lst_clientes:
@@ -432,12 +452,23 @@ def atualizar_banco():
 
     arq.close()
     
+    # alugueis
+    
     arq = open('alugueis_dados.txt', 'w')
 
     for x in lst_dividas:
         for y in x:
             arq.writelines((str(y))+'\n')    
 
+    arq.close()
+    
+    # estoque
+    
+    arq = open('estoque_dados.txt', 'w')
+    
+    for x in lst_estoque:
+        arq.writelines((str(x))+'\n')
+        
     arq.close()
     
     return
