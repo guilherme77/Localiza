@@ -360,22 +360,32 @@ def deletar_usuario():
    
     quem_del = '0'
     
-    while(quem_del not in lst_ids_ativos):
+    while((int(quem_del)) not in lst_ids_ativos):
         quem_del = raw_input('\nDigite o id do usuario que deseja apagar do sistema: ')
         
     for x in lst_dividas:
-        for y in x:
-            if y[0]==(int(quem_del)):
-                print('O usuario escolhido possui dividas com a empresa. Nao eh possivel apaga-lo\n')
-                print(y)
-            else:
-                print('Usuario encontrado. Nao possui dividas pendentes. Apagando ...\n')
-                for z in lst_usuarios:
-                    for w in z:
-                        if w[0]==y[0]:
-                            lst_ids_ativos.remove(w[0])
-                            z.remove(w)                                           
-    return                                  
+        if x[0]==(int(quem_del)):
+            print('O usuario escolhido possui dividas com a empresa. Nao eh possivel apaga-lo\n')
+            print(x)
+            return         
+            
+    print('Usuario encontrado. Nao possui dividas pendentes. Apagando ...\n')
+    index = 0
+    for z in lst_usuarios:
+        for w in z:
+            if w[0]==(int(quem_del)):
+                print lst_clientes
+                print w
+                lst_ids_ativos.remove(w[0])
+                if index==0:
+                    lst_gerentes.remove(w)
+                elif index==1:
+                    lst_clientes.remove(w)
+                elif index==2:
+                    lst_funcionarios.remove(w)
+        index = index + 1                                        
+    
+        return                                  
                                   
 def armazena(info, x):
     if x==1:
