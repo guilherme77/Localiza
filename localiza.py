@@ -81,7 +81,7 @@ def iniciar_banco_dados(): #essa funcao tambem devera atualizar estoques, situac
     for x in linha:
         if k==0:
             lst_add.append((int(x)))
-            lst_ids_ativos.append((int(x))
+            lst_ids_ativos.append((int(x)))
         elif k==4:
             lst_add.append((int(x)))
         else:
@@ -107,7 +107,7 @@ def iniciar_banco_dados(): #essa funcao tambem devera atualizar estoques, situac
     for x in linha:
         if k==0:
             lst_add.append((int(x)))
-            lst_ids_ativos.append((int(x))
+            lst_ids_ativos.append((int(x)))
         elif k==4:
             lst_add.append((int(x)))
         else:
@@ -133,7 +133,7 @@ def iniciar_banco_dados(): #essa funcao tambem devera atualizar estoques, situac
     for x in linha:
         if k==0:
             lst_add.append((int(x)))
-            lst_ids_ativos.append((int(x))
+            lst_ids_ativos.append((int(x)))
         elif k==4:
             lst_add.append((int(x)))
         else:
@@ -226,11 +226,13 @@ def verifica_perfil():
         for y in x:
             if y[7]=='gerente':
                 func_gerente()
+                return
             elif y[7]=='funcionario':
                 func_funcionario()
+                return
             elif y[7]=='cliente':
-                func_cliente()   
-    return                
+                func_cliente()
+                return               
 
 def func_gerente():
     opcao_ger = 0
@@ -411,9 +413,9 @@ def gera_id_user():
         if not id_user in lst_ids_ativos:
             break
 
-  lst_ids_ativos.append(id_user)
+    lst_ids_ativos.append(id_user)
 
-  return id_user
+    return id_user
 
 def gera_idade(data_nasc):
     
