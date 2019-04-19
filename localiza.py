@@ -236,7 +236,7 @@ def verifica_perfil():
 
 def func_gerente():
     opcao_ger = 0
-    tp_libera = ('1','2','3','4', '5', '156')
+    tp_libera = ('1','2','3','4', '5', '6', '156')
     
     while(opcao_ger not in tp_libera):
         opcao_ger = raw_input('Gerente logado, o que deseja?\n[1] Cadastrar alguem \n[2] Ativar cadastro\n[3] Buscar usuario\n[4] Verificar estoque\n[5] Deletar usuario\n[6] Buscar item\n[156] Deslogar\n')
