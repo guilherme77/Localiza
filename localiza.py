@@ -414,22 +414,17 @@ def buscar_item():
 
 def att_usuario():  
     print('Logins dos usuarios cadastrados no sistema: \n')
-    lst_disponiveis = []
     dados_novos = []
+    exibe()
     
-    for x in lst_usuarios:
-        for y in x:
-            print(y[5])
-            lst_disponiveis.append(y[5])
-            
-    quem_att = raw_input('\nDigite o login de quem deseja atualizar: ')
+    quem_att = raw_input('\nDigite o id de quem deseja atualizar: ')
     
-    if quem_att not in lst_disponiveis:
+    if (int(quem_att)) not in lst_ids_ativos:
         print('Usuario nao disponivel\n')
         return   
     
     for x in lst_dividas:
-        if x[0]==quem_att:
+        if x[0]==(int(quem_att)):
             print('O usuario possui dividas com a empresa; atualizacao de perfil indisponivel\n')
             print(x)
             return
@@ -452,7 +447,7 @@ def att_usuario():
     
     for x in lst_usuarios:
         for y in x:
-            if y[5]==quem_att:
+            if y[0]==(int(quem_att)):
                 aux.append(y[0])
                 for z in range(0,6):
                     aux.append(dados_novos[z])
