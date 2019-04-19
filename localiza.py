@@ -239,7 +239,7 @@ def func_gerente():
     tp_libera = ('1','2','3','4', '5', '156')
     
     while(opcao_ger not in tp_libera):
-        opcao_ger = raw_input('Gerente logado, o que deseja?\n[1] Cadastrar alguem \n[2] Ativar cadastro\n[3] Buscar usuario\n[4] Verificar estoque\n[5] Deletar usuario\n[156] Deslogar\n')
+        opcao_ger = raw_input('Gerente logado, o que deseja?\n[1] Cadastrar alguem \n[2] Ativar cadastro\n[3] Buscar usuario\n[4] Verificar estoque\n[5] Deletar usuario\n[6] Buscar item\n[156] Deslogar\n')
     
     if opcao_ger=='1':
         realizar_cadastro()
@@ -251,6 +251,8 @@ def func_gerente():
         verificar_estoque()
     elif opcao_ger=='5':
         deletar_usuario()
+    elif opcao_ger=='6':
+        buscar_item()
     
     if opcao_ger!='156':
         func_gerente()
@@ -388,7 +390,25 @@ def deletar_usuario():
         index = index + 1                                        
     
         return                                  
-                                  
+
+def buscar_item():
+    tp_id = ('001', '002', '003')
+    iden = '0'
+    alugados = []
+    
+    while(iden not in tp_id):
+        iden = raw_input('\nDigite o id do modelo que deseja verficar: \n[001] SUV\n[002] Sedan\n[003] Hatch\n ')
+    
+    for x in lst_dividas:
+        for y in x:
+            if x==iden:
+                alugados.append(x)
+    
+    print('Modelos %s em estoque: %d' %(iden, (lst_estoque[int(iden)])))
+    print('Modelos %s com aluguel ativo: ' %(iden), alugados)
+    
+    return
+    
 def armazena(info, x):
     if x==1:
         lst_perfispendentes.append(info)
