@@ -331,23 +331,24 @@ def realizar_cadastro():
     return
 
 def buscar_usuario():
+    exibe()
     ok = 0
-    nome_user = raw_input("\nDigite o login do usuario que deseja localizar: \n")
+    id_user = raw_input("\nDigite o id do usuario que deseja localizar: \n")
     
     for x in lst_usuarios:
         for y in x:
-            if y[5]==nome_user:
-                print("\nUsuario '%s' encontrado " %(nome_user), y)
+            if y[0]==(int(id_user)):
+                print("\nUsuario '%d' encontrado " %(int(id_user)), y)
                 ok = 1
                 for z in lst_dividas:
-                    if nome_user==z[0]:
+                    if (int(id_user==z[0])):
                         print('\nO usuario possui dividas coma empresa: ')
                         print('Usuario: ', z[0], '\nDiarias: ', z[3], '\nMultas: ', z[4])
                     else:
                         print("\nO usuario nao possui dividas com a empresa.\n")
                         
     if ok==0:
-        print("\nDesculpe, mas o usuario '%s' nao consta no sistema!\n" %(nome_user))
+        print("\nDesculpe, mas o usuario '%d' nao consta no sistema!\n" %((int(id_user))))
     
     return
 
