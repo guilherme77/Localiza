@@ -236,10 +236,10 @@ def verifica_perfil():
 
 def func_gerente():
     opcao_ger = 0
-    tp_libera = ('1','2','3','4', '5', '6', ',7', '156')
+    tp_libera = ('1','2','3','4', '5', '6', ',7','8','156')
     
     while(opcao_ger not in tp_libera):
-        opcao_ger = raw_input('Gerente logado, o que deseja?\n[1] Cadastrar alguem \n[2] Ativar cadastro\n[3] Buscar usuario\n[4] Verificar estoque\n[5] Deletar usuario\n[6] Buscar item\n[7] Atualizar usuario\n[156] Deslogar\n')
+        opcao_ger = raw_input('Gerente logado, o que deseja?\n[1] Cadastrar alguem \n[2] Ativar cadastro\n[3] Buscar usuario\n[4] Verificar estoque\n[5] Deletar usuario\n[6] Buscar item\n[7] Atualizar usuario\n[8]Quantidade de usuarios cadastrados\n[156] Deslogar\n')
     
     if opcao_ger=='1':
         realizar_cadastro()
@@ -255,6 +255,8 @@ def func_gerente():
         buscar_item()
     elif opcao_ger=='7':
         att_usuario()
+    elif opcao_ger=='8':
+        quant_usuarios()
     
     if opcao_ger!='156':
         func_gerente()
@@ -463,6 +465,20 @@ def att_usuario():
                     lst_funcionarios.append(aux)    
         
     return           
+
+def quant_usuarios():
+    quant = 0
+    for x in lst_usuarios:
+        quant = quant + len(x)
+    
+    print('Contagem atual do sistema: ')    
+    print('\n1. Quantidade total de usuarios cadastrados no sistema: %d' %(quant))
+    print('2. Quantidade de gerentes: %d' %(len(lst_gerentes)))
+    print('3. Quantidade de clientes: %d' %(len(lst_clientes)))
+    print('4. Quantidade de funcionarios: %d' %(len(lst_funcionarios)))
+    print('5. Quantidade de perfis pendentes de atualziacao: %d' %(len(lst_perfispendentes)))
+    
+    return
 
 def armazena(info, x):
     if x==1:
