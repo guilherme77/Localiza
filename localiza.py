@@ -236,10 +236,10 @@ def verifica_perfil():
 
 def func_gerente():
     opcao_ger = 0
-    tp_libera = ('1','2','3','4', '5', '6', '156')
+    tp_libera = ('1','2','3','4', '5', '6', ',7', '156')
     
     while(opcao_ger not in tp_libera):
-        opcao_ger = raw_input('Gerente logado, o que deseja?\n[1] Cadastrar alguem \n[2] Ativar cadastro\n[3] Buscar usuario\n[4] Verificar estoque\n[5] Deletar usuario\n[6] Buscar item\n[156] Deslogar\n')
+        opcao_ger = raw_input('Gerente logado, o que deseja?\n[1] Cadastrar alguem \n[2] Ativar cadastro\n[3] Buscar usuario\n[4] Verificar estoque\n[5] Deletar usuario\n[6] Buscar item\n[7] Atualizar usuario\n[156] Deslogar\n')
     
     if opcao_ger=='1':
         realizar_cadastro()
@@ -253,6 +253,8 @@ def func_gerente():
         deletar_usuario()
     elif opcao_ger=='6':
         buscar_item()
+    elif opcao_ger=='7':
+        att_usuario()
     
     if opcao_ger!='156':
         func_gerente()
@@ -409,7 +411,64 @@ def buscar_item():
     print('Modelos %s com aluguel ativo: ' %(iden), alugados)
     
     return
+
+def att_usuario():  
+    print('Logins dos usuarios cadastrados no sistema: \n')
+    lst_disponiveis = []
+    dados_novos = []
     
+    for x in lst_usuarios:
+        for y in x:
+            print(y[5])
+            lst_disponiveis.append(y[5])
+            
+    quem_att = raw_input('\nDigite o login de quem deseja atualizar: ')
+    
+    if quem_att not in lst_disponiveis:
+        print('Usuario nao disponivel\n')
+        return   
+    
+    for x in lst_dividas:
+        if x[0]==quem_att:
+            print('O usuario possui dividas com a empresa; atualizacao de perfil indisponivel\n')
+            print(x)
+            return
+    
+    att_nome = raw_input('Nome: \n')
+    dados_novos.append(att_nome)
+    att_cpf = raw_input('CPF: \n')
+    dados_novos.append(att_cpf)
+    att_datanasc = raw_input('Data de nascimento: \n')
+    dados_novos.append(att_datanasc)
+    att_idade = gera_idade(att_datanasc)
+    dados_novos.append(att_idade)
+    att_login = raw_input('Login: \n')
+    dados_novos.append(att_login)
+    att_senha = raw_input('Senha: \n')
+    dados_novos.append(att_senha)
+    
+    aux = []
+    
+    
+    for x in lst_usuarios:
+        for y in x:
+            if y[5]==quem_att:
+                aux.append(y[0])
+                for z in range(0,6):
+                    aux.append(dados_novos[z])
+                aux.append(y[7])               
+                if y[7]=='gerente':
+                    lst_gerentes.remove(y)
+                    lst_gerentes.append(aux)
+                if y[7]=='cliente':
+                    lst_clientes.remove(y)
+                    lst_clientes.append(aux)
+                if y[7]=='funcionario':
+                    lst_funcionarios.remove(y)
+                    lst_funcionarios.append(aux)    
+        
+    return           
+
 def armazena(info, x):
     if x==1:
         lst_perfispendentes.append(info)
