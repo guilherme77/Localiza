@@ -236,10 +236,10 @@ def verifica_perfil():
 
 def func_gerente():
     opcao_ger = 0
-    tp_libera = ('1','2','3','4', '5', '6', ',7','8','156')
+    tp_libera = ('1','2','3','4', '5', '6', '7','8','9','156')
     
     while(opcao_ger not in tp_libera):
-        opcao_ger = raw_input('Gerente logado, o que deseja?\n[1] Cadastrar alguem \n[2] Ativar cadastro\n[3] Buscar usuario\n[4] Verificar estoque\n[5] Deletar usuario\n[6] Buscar item\n[7] Atualizar usuario\n[8]Quantidade de usuarios cadastrados\n[156] Deslogar\n')
+        opcao_ger = raw_input('Gerente logado, o que deseja?\n[1] Cadastrar alguem \n[2] Ativar cadastro\n[3] Buscar usuario\n[4] Verificar estoque\n[5] Deletar usuario\n[6] Buscar item\n[7] Atualizar usuario\n[8]Quantidade de usuarios cadastrados\n[9]Alterar perfil de usuario\n[156] Deslogar\n')
     
     if opcao_ger=='1':
         realizar_cadastro()
@@ -257,6 +257,8 @@ def func_gerente():
         att_usuario()
     elif opcao_ger=='8':
         quant_usuarios()
+    elif opcao_ger=='9':
+        alterar_perfil()
     
     if opcao_ger!='156':
         func_gerente()
@@ -478,6 +480,57 @@ def quant_usuarios():
     print('4. Quantidade de funcionarios: %d' %(len(lst_funcionarios)))
     print('5. Quantidade de perfis pendentes de atualziacao: %d' %(len(lst_perfispendentes)))
     
+    return
+
+def alterar_perfil():
+    exibe()
+    quem_alterar = '0'
+    tp_perfil = ('gerente', 'funcionario', 'cliente')
+    novo_perfil = 'aleat'
+    
+    quem_alterar = raw_input('\nDigite o ID de quem deseja alterar o perfil: ')
+        
+    if (int(quem_alterar)) not in lst_ids_ativos:
+        print('Usuario nao encontrado.\n')
+        return
+        
+    for x in lst_dividas:
+        if x[0]==(int(quem_alterar)):
+            print('Usuario pendente na lista de dividas. Impossivel alterar perfil agora', x)
+            return
+    
+    k = 0
+    i = 0
+    aux = []
+    aux2 = []
+    
+    for x in lst_usuarios:
+        for y in x:
+            if y[0]==(int(quem_alterar)):
+                aux = y
+                aux2 = y
+                k = i
+        i = i+1
+    
+    while(novo_perfil not in tp_perfil):
+        novo_perfil = raw_input('Digite o novo perfil para o seu usuario: ')
+    
+    aux[7] = novo_perfil
+        
+    if k==0:
+        lst_gerentes.remove(aux2)
+    elif k==1:
+        lst_clientes.remove(aux2)
+    elif k==2:
+        lst_funcionarios.remove(aux2)
+        
+    if novo_perfil=='gerente':
+        lst_gerentes.append(aux)
+    elif novo_perfil=='cliente':
+        lst_clientes.append(aux)
+    elif novo_perfil=='funcionario':
+        lst_funcionarios.append(aux)
+           
     return
 
 def armazena(info, x):
