@@ -35,7 +35,7 @@ lst_estoque = []
 
 def main():
     print('Iniciando sistema ...\n')
-    print('Locadora de Vans Localiza, bem-vindo(a)!\n')
+    print('Locadora de Carros Localiza, bem-vindo(a)!\n')
     
     inicia_sistema()
 
@@ -274,12 +274,15 @@ def func_funcionario():
 
 def func_cliente():
     opcao_cli = 0
-    tp_libera = ('1', '2')
+    tp_libera = ('1','2','3')
     
     while(opcao_cli not in tp_libera):
-        opcao_cli = raw_input('Cliente logado, o que deseja?\n[1] Alugar veiculo\n[2]Deslogar')
+        opcao_cli = raw_input('Cliente logado, o que deseja?\n[1] Alugar carro\n[2]Verificar meu status\n[3]Deslogar')
     
-    if opcao_cli!='2':
+    if opcao_cli=='1':
+        alugar_carro()
+    
+    if opcao_cli!='3':
         func_cliente()
     
     print('Saindo\n')
