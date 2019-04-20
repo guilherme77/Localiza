@@ -158,17 +158,17 @@ def iniciar_banco_dados(): #essa funcao tambem devera atualizar estoques, situac
 
     for x in linha:
         if k==1:
-            lst_add.append((int(x)))
-        elif k==2:
-            lst_add.append((int(x)))
-        else:
             new = x.replace(x, x[:-1])
             lst_add.append(new)
+        else:
+            lst_add.append((int(x)))
+            
         k = k+1
-        if(len(lst_add)==4):
+        if(len(lst_add)==5):
             lst_dividas.append(lst_add)
             k=0
             lst_add = []
+
  
     #    print(lst_dividas)
 
