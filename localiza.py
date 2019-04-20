@@ -273,6 +273,17 @@ def func_funcionario():
     return
 
 def func_cliente():
+    opcao_cli = 0
+    tp_libera = ('1', '2')
+    
+    while(opcao_cli not in tp_libera):
+        opcao_cli = raw_input('Cliente logado, o que deseja?\n[1] Alugar veiculo\n[2]Deslogar')
+    
+    if opcao_cli!='2':
+        func_cliente()
+    
+    print('Saindo\n')
+    
     return
 
 def ativar_cadastro():
