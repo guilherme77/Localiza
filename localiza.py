@@ -31,6 +31,8 @@ lst_tarifasdiarias = [1,2,3]
 lst_dividas = [] # cada item sera uma sublista com indices ID, ID do modelo alugado, data de aluguel, diaria em divida, possiveis multas
 lst_estoque = []
 
+tp_diarias = (110, 120, 90)
+
 # Funcoes e resto do codigo
 
 def main():
@@ -225,17 +227,16 @@ def verifica_perfil(username):
         for y in x:
             if y[5]==username:
                 if y[7]=='gerente':
-                    func_gerente()
+                    func_gerente(username)
                     return
                 elif y[7]=='funcionario':
-                    func_funcionario()
+                    func_funcionario(username)
                     return
                 elif y[7]=='cliente':
-                    func_cliente()
+                    func_cliente(username)
                     return                
-               
 
-def func_gerente():
+def func_gerente(username):
     opcao_ger = 0
     tp_libera = ('1','2','3','4', '5', '6', '7','8','9','10','156')
     
@@ -266,14 +267,14 @@ def func_gerente():
         deletar_item()
     
     if opcao_ger!='156':
-        func_gerente()
+        func_gerente(username)
     
     return
 
-def func_funcionario():
+def func_funcionario(username):
     return
 
-def func_cliente():
+def func_cliente(username):
     opcao_cli = 0
     tp_libera = ('1','2','3')
     
@@ -281,10 +282,10 @@ def func_cliente():
         opcao_cli = raw_input('Cliente logado, o que deseja?\n[1] Alugar carro\n[2]Verificar meu status\n[3]Deslogar')
     
     if opcao_cli=='1':
-        alugar_carro()
+        alugar_carro(username)
     
     if opcao_cli!='3':
-        func_cliente()
+        func_cliente(username)
     
     print('Saindo\n')
     
@@ -597,6 +598,40 @@ def deletar_item():
     verificar_estoque()
     
     return
+
+def alugar_carro(username):
+    print('ALUGUEL - para cada veiculo alugado, um novo processo de aluguel devera ser feito. Aluguel de no maximo 30 dias.\n')
+    tp_carros = ('001','002','003')
+    num_dias = '0'
+    qual_alug = '0'
+    divida = 0
+    
+    while(qual_alug not in tp_carros):
+        qual_alug = raw_input('Digite o ID de qual veiculo deseja alugar (1 unidade): \n[001]SUV: diaria R$ 110,00 \n[002]Sedan: diaria R$ 120,00 \n[003]Hatch: diaria R$ 90,00\n')
+        
+    num_dias = raw_input('Digite a quantidade de dias que deseja estar em posse do modelo: ')
+    
+    divida = gera_divida(qual_alug,int(num_dias))
+    
+    print divida
+    
+    
+    
+    return
+
+def gera_divida(model,dias):
+    valor = 0
+    if model=='001':
+        valor = tp_diarias[0]
+    elif model=='002':
+        valor = tp_diarias[1]
+    elif model=='003':
+        valor = tp_diarias[2]
+        
+    valor = valor*dias
+        
+    return valor
+            
 
 def armazena(info, x):
     if x==1:
