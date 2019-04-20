@@ -236,10 +236,10 @@ def verifica_perfil():
 
 def func_gerente():
     opcao_ger = 0
-    tp_libera = ('1','2','3','4', '5', '6', '7','8','9','156')
+    tp_libera = ('1','2','3','4', '5', '6', '7','8','9','10','156')
     
     while(opcao_ger not in tp_libera):
-        opcao_ger = raw_input('Gerente logado, o que deseja?\n[1] Cadastrar alguem \n[2] Ativar cadastro\n[3] Buscar usuario\n[4] Verificar estoque\n[5] Deletar usuario\n[6] Buscar item\n[7] Atualizar usuario\n[8]Quantidade de usuarios cadastrados\n[9]Alterar perfil de usuario\n[156] Deslogar\n')
+        opcao_ger = raw_input('Gerente logado, o que deseja?\n[1] Cadastrar alguem \n[2] Ativar cadastro\n[3] Buscar usuario\n[4] Verificar estoque\n[5] Deletar usuario\n[6] Buscar item\n[7] Atualizar usuario\n[8]Quantidade de usuarios cadastrados\n[9]Alterar perfil de usuario\n[10]Cadastrar item\n[156] Deslogar\n')
     
     if opcao_ger=='1':
         realizar_cadastro()
@@ -259,6 +259,8 @@ def func_gerente():
         quant_usuarios()
     elif opcao_ger=='9':
         alterar_perfil()
+    elif opcao_ger=='10':
+        cadastrar_item()
     
     if opcao_ger!='156':
         func_gerente()
@@ -531,6 +533,25 @@ def alterar_perfil():
     elif novo_perfil=='funcionario':
         lst_funcionarios.append(aux)
            
+    return
+
+def cadastrar_item():
+    tp_idcarros = ('001','002','003')
+    idcarros = '0'
+    
+    while(idcarros not in tp_idcarros):
+        print(tp_idcarros)
+        idcarros = raw_input('Digite o ID que voce deseja cadastrar um novo item: ')
+        
+    if idcarros=='001':
+        lst_estoque[0] = lst_estoque[0] + 1
+    elif idcarros=='002':
+        lst_estoque[1] = lst_estoque[1] + 1
+    elif idcarros=='003':
+        lst_estoque[2] = lst_estoque[2] + 1    
+    
+    verificar_estoque()
+    
     return
 
 def armazena(info, x):
