@@ -202,7 +202,7 @@ def fazer_login():
     chave = checa_login(nome_usuario,senha_usuario)
     
     if chave==1:
-        verifica_perfil()
+        verifica_perfil(nome_usuario)
     else:
         while(opcao not in tp_opcao):    
             opcao = raw_input("Algo deu errado. Deseja tentar logar novamente? y ou n")
@@ -220,19 +220,20 @@ def checa_login(username, password):
                 else:
                     return 2
                 
-def verifica_perfil():
-    
+def verifica_perfil(username):    
     for x in lst_usuarios:
         for y in x:
-            if y[7]=='gerente':
-                func_gerente()
-                return
-            elif y[7]=='funcionario':
-                func_funcionario()
-                return
-            elif y[7]=='cliente':
-                func_cliente()
-                return               
+            if y[5]==username:
+                if y[7]=='gerente':
+                    func_gerente()
+                    return
+                elif y[7]=='funcionario':
+                    func_funcionario()
+                    return
+                elif y[7]=='cliente':
+                    func_cliente()
+                    return                
+               
 
 def func_gerente():
     opcao_ger = 0
