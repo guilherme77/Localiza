@@ -283,10 +283,12 @@ def func_cliente(username):
     tp_libera = ('1','2','3')
     
     while(opcao_cli not in tp_libera):
-        opcao_cli = raw_input('Cliente logado, o que deseja?\n[1] Alugar carro\n[2]Verificar meu status\n[3]Deslogar')
+        opcao_cli = raw_input('Cliente logado, o que deseja?\n[1] Alugar carro\n[2]Verificar meu status\n[3]Deslogar\n')
     
     if opcao_cli=='1':
         alugar_carro(username)
+    elif opcao_cli=='2':
+        verifica_status(username)
     
     if opcao_cli!='3':
         func_cliente(username)
@@ -725,6 +727,27 @@ def graficos():
     pp.show()
     
     return
+
+def verifica_status(username):
+    aux = []
+    id_user = 0
+    
+    for x in lst_usuarios:
+        for y in x:
+            if y[5]==username:
+                id_user = y[0]
+    
+    for x in lst_dividas:
+        if x[0]==id_user:
+            aux.append(x)
+            
+    print('Suas dividas atuais com a empresa sao: ordem [id do usuario,id do modelo,data do aluguel, diaria em divida, multa (se existente),tempo definido do aluguel]\n')
+    
+    for x in aux:
+        print x
+    
+    return
+
 
 def armazena(info, x):
     if x==1:
