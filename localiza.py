@@ -292,9 +292,7 @@ def func_cliente(username):
     
     if opcao_cli!='3':
         func_cliente(username)
-    
-    print('Saindo\n')
-    
+
     return
 
 def ativar_cadastro():
@@ -745,9 +743,11 @@ def verifica_status(username):
     
     for x in aux:
         print x
-    
+        
+    if len(aux)==0:
+        print('Voce nao tem dividas ativas.\n')
+       
     return
-
 
 def armazena(info, x):
     if x==1:
