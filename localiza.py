@@ -729,7 +729,7 @@ def armazena(info, x):
         lst_funcionarios.append(info)
         print('\n', lst_funcionarios)
     elif x==4:
-        lst_funcionarios.append(info)
+        lst_clientes.append(info)
         print('\n', lst_clientes)
     elif x==5:
         lst_dividas.append(info)
