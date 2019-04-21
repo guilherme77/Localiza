@@ -605,7 +605,19 @@ def alugar_carro(username):
     num_dias = '0'
     qual_alug = '0'
     divida = 0
+    id_user = 0
     
+    for x in lst_usuarios:
+        for y in x:
+            if y[5]==username:
+                id_user=y[0]
+                
+    for x in lst_dividas:
+        if x[0]==id_user:
+            if x[4]!=0:
+                print('Voce esta com R$ %d de divida com a empresa; impossivel realizar novo aluguel\n')
+                return
+            
     while(qual_alug not in tp_carros):
         qual_alug = raw_input('Digite o ID de qual veiculo deseja alugar (1 unidade): \n[001]SUV: diaria R$ 110,00 \n[002]Sedan: diaria R$ 120,00 \n[003]Hatch: diaria R$ 90,00\n')
         
@@ -613,9 +625,25 @@ def alugar_carro(username):
     
     divida = gera_divida(qual_alug,int(num_dias))
     
-    print divida
+    new = []
+    data = (str(datetime.now().day)) + ('0'+str(datetime.now().month)) + (str(datetime.now().year))
     
+    new.append(id_user)
+    new.append(qual_alug)
+    new.append(int(data))
+    new.append(divida)
+    new.append(0)
     
+    armazena(new,5)
+    
+    arq = open('historicotransacoes_dados.txt', 'w')
+    
+    for x in new:
+        arq.writelines((str(x))+'\n')
+        
+    arq.close()
+    
+    print('Aluguel finalizado.\n')
     
     return
 
@@ -646,6 +674,8 @@ def armazena(info, x):
     elif x==4:
         lst_funcionarios.append(info)
         print('\n', lst_clientes)
+    elif x==5:
+        lst_dividas.append(info)
     
     atualizar_banco()
         
