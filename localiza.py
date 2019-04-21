@@ -43,13 +43,14 @@ def main():
     inicia_sistema()
 
 def inicia_sistema():
-    x = 0 # variavel provisoria, apenas para nao estourar o while
+    x = 0
     while(tag):
         opcoes_iniciais(x)
-        x += 1
-        if x==2:
+        op = raw_input('Encerrar sistema?y ou n\n')
+        if op=='y':
             atualizar_banco()
             break
+        x = x+1
 
 def opcoes_iniciais(x):
     entrada_inicial = 0
@@ -167,7 +168,7 @@ def iniciar_banco_dados(): #essa funcao tambem devera atualizar estoques, situac
             lst_add.append((int(x)))
             
         k = k+1
-        if(len(lst_add)==5):
+        if(len(lst_add)==6):
             lst_dividas.append(lst_add)
             k=0
             lst_add = []
@@ -624,6 +625,12 @@ def alugar_carro(username):
     while(qual_alug not in tp_carros):
         qual_alug = raw_input('Digite o ID de qual veiculo deseja alugar (1 unidade): \n[001]SUV: diaria R$ 110,00 \n[002]Sedan: diaria R$ 120,00 \n[003]Hatch: diaria R$ 90,00\n')
         
+    if lst_estoque[(int(qual_alug))-1]<1:
+        print('Modelo indisponivel no estoque.\n')
+        return
+    else:
+        lst_estoque[(int(qual_alug))-1] = lst_estoque[(int(qual_alug))-1] - 1
+    
     num_dias = raw_input('Digite a quantidade de dias que deseja estar em posse do modelo: ')
     
     divida = gera_divida(qual_alug,int(num_dias))
@@ -636,6 +643,7 @@ def alugar_carro(username):
     new.append(int(data))
     new.append(divida)
     new.append(0)
+    new.append(num_dias)
     
     armazena(new,5)
     
@@ -646,7 +654,7 @@ def alugar_carro(username):
         
     arq.close()
     
-    print('Aluguel finalizado.\n')
+    print('Aluguel finalizado.\n Modelo: %s\nTempo do aluguel: %d \nValor em divida: R$ %d' %(new[1],new[5],new[3]))
     
     return
 
