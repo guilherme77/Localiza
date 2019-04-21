@@ -11,6 +11,7 @@ initiation of the program...
 
 import random as rd 
 import pandas as pd
+import matplotlib.pyplot as pp
 
 from datetime import datetime
 from time import sleep
@@ -238,10 +239,10 @@ def verifica_perfil(username):
 
 def func_gerente(username):
     opcao_ger = 0
-    tp_libera = ('1','2','3','4', '5', '6', '7','8','9','10','156')
+    tp_libera = ('1','2','3','4', '5', '6', '7','8','9','10','11','12','156')
     
     while(opcao_ger not in tp_libera):
-        opcao_ger = raw_input('Gerente logado, o que deseja?\n[1] Cadastrar alguem \n[2] Ativar cadastro\n[3] Buscar usuario\n[4] Verificar estoque\n[5] Deletar usuario\n[6] Buscar item\n[7] Atualizar usuario\n[8]Quantidade de usuarios cadastrados\n[9]Alterar perfil de usuario\n[10]Cadastrar item\n[11]Deletar item\n[156] Deslogar\n')
+        opcao_ger = raw_input('Gerente logado, o que deseja?\n[1] Cadastrar alguem \n[2] Ativar cadastro\n[3] Buscar usuario\n[4] Verificar estoque\n[5] Deletar usuario\n[6] Buscar item\n[7] Atualizar usuario\n[8]Quantidade de usuarios cadastrados\n[9]Alterar perfil de usuario\n[10]Cadastrar item\n[11]Deletar item\n[12]Ver graficos\n[156] Deslogar\n')
     
     if opcao_ger=='1':
         realizar_cadastro()
@@ -265,6 +266,8 @@ def func_gerente(username):
         cadastrar_item()
     elif opcao_ger=='11':
         deletar_item()
+    elif opcao_ger=='12':
+        graficos()        
     
     if opcao_ger!='156':
         func_gerente(username)
@@ -659,7 +662,61 @@ def gera_divida(model,dias):
     valor = valor*dias
         
     return valor
-            
+
+def graficos():
+    ano = raw_input('Digite o ano em que gostaria de observar as vendas: \n')
+    
+    arq = open('historicotransacoes.txt','r')
+    linha = arq.readlines()
+    
+    modelos = ['SUV','Sedan','Hatch']
+    quant = [0,0,0]
+    
+    for x in linha:
+        if (int(linha[4:]))==(int(ano)):
+
+            if (int(linha))==1:
+                quant[0] = quant[0]+1
+            elif (int(linha))==2:
+                quant[1] = quant[1]+1
+            elif (int(linha))==3:
+                quant[2] = quant[2]+1
+
+    arq.close()
+    
+    pp.plot(modelos, quant)
+    pp.title('Numero de alugueis por modelo no ano %s' %(ano))
+    pp.xlabel('Modelos')
+    pp.ylabel('Quantidade de alugueis')
+
+    pp.show()            
+        
+    faixa_etaria = ['18-25','26-35','36-45','46-55','55+']
+    quant = []
+    quant = [0,0,0,0,0]
+    
+    for x in lst_usuarios:
+        for y in x:
+            if y[4]>17 and y[4]<26:
+                quant[0] = quant[0] + 1
+            elif y[4]>25 and y[4]<36:
+                quant[1] = quant[1]+1
+            elif y[4]>35 and y[4]<46:
+                quant[2] = quant[2]+1
+            elif y[4]>45 and y[4]<56:
+                quant[3] = quant[3]+1
+            elif y[4]>55:
+                quant[4] = quant[4]+1
+                
+    pp.bar(faixa_etaria, quant, color='blue')
+    pp.title('Quantidade de usuarios cadastrados por faixa etaria')
+    pp.xticks(faixa_etaria)
+    pp.ylabel('Nº de usuarios')
+    pp.xlabel('Faixa etaria (anos)')
+    
+    pp.show()
+    
+    return
 
 def armazena(info, x):
     if x==1:
