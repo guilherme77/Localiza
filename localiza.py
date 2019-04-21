@@ -643,7 +643,7 @@ def alugar_carro(username):
     new.append(int(data))
     new.append(divida)
     new.append(0)
-    new.append(num_dias)
+    new.append(int(num_dias))
     
     armazena(new,5)
     
