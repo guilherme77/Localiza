@@ -404,12 +404,17 @@ def realizar_cadastro():
                 entrada_dados = 'k'
                 while len(entrada_dados)!=8:
                     entrada_dados = raw_input('%s' %(lst_perguntas[x]))
+            elif x==5:
+                ok = 0
+                while ok==0:
+                    entrada_dados = raw_input('%s' %(lst_perguntas[x]))
+                    ok = login_existe(entrada_dados)
             else:                   
                 entrada_dados = raw_input('%s' %(lst_perguntas[x]))
         
         lst_dados.append(entrada_dados)
         x = x+1
-        
+          
     print('Fim do cadastro!\n')
     armazena(lst_dados, 1)
     
@@ -518,17 +523,21 @@ def att_usuario():
     dados_novos.append(att_nome)
     att_cpf = raw_input('CPF: \n')
     dados_novos.append(att_cpf)
-    att_datanasc = raw_input('Data de nascimento: \n')
+    att_datanasc = '98'
+    while len(att_datanasc)!=8:
+        att_datanasc = raw_input('Data de nascimento: \n')
     dados_novos.append(att_datanasc)
     att_idade = gera_idade(att_datanasc)
     dados_novos.append(att_idade)
-    att_login = raw_input('Login: \n')
+    ok = 0
+    while ok==0:
+        att_login = raw_input('Login: \n')
+        ok = login_existe(att_login)
     dados_novos.append(att_login)
     att_senha = raw_input('Senha: \n')
     dados_novos.append(att_senha)
     
     aux = []
-    
     
     for x in lst_usuarios:
         for y in x:
@@ -805,6 +814,20 @@ def verifica_status(username):
         print('Voce nao tem dividas ativas.\n')
        
     return
+
+def login_existe(username):
+    for x in lst_usuarios:
+        for y in x:
+            if y[5]==username:
+                print('Login ja existente. Tente outro!\n')
+                return 0
+    
+    for x in lst_perfispendentes:
+            if x[5]==username:
+                print('Login ja existente. Tente outro!\n')
+                return 0
+    
+    return 1
 
 def armazena(info, x):
     if x==1:
