@@ -343,11 +343,22 @@ def ativar_cadastro():
     qual_perfil = 0
     tp_libera = range(1,len(lst_perfispendentes)+1)
     tp_libera2 = ('1','2','3')
+    
+    if len(lst_perfispendentes)==0:
+        print('Nao ha perfis pendentes.\n')
+        return
+    
     print("Os usuarios com perfis pendentes sao: \n")
     
     for x in lst_perfispendentes:
         print(x)
         print('\n')
+        
+    conf = raw_input('Deseja realmente adicionar alguem ao sistema?y ou n\n')
+    
+    if conf=='n':
+        print('Operacao cancelada.\n')
+        return
     
     while((int(ativar_quem)) not in tp_libera):
         ativar_quem = raw_input("Quem deseja adicionar? Cada opcao eh um inteiro que vai de 1 ate o maximo disponivel\n")
