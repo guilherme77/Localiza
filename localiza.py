@@ -260,10 +260,10 @@ def verifica_perfil(username):
 
 def func_gerente(username):
     opcao_ger = 0
-    tp_libera = ('1','2','3','4', '5', '6', '7','8','9','10','11','12','156')
+    tp_libera = ('1','2','3','4', '5', '6', '7','8','9','10','11','12','13','14','156')
     
     while(opcao_ger not in tp_libera):
-        opcao_ger = raw_input('Gerente logado, o que deseja?\n[1] Cadastrar alguem \n[2] Ativar cadastro\n[3] Buscar usuario\n[4] Verificar estoque\n[5] Deletar usuario\n[6] Buscar item\n[7] Atualizar usuario\n[8]Quantidade de usuarios cadastrados\n[9]Alterar perfil de usuario\n[10]Cadastrar item\n[11]Deletar item\n[12]Ver graficos\n[156] Deslogar\n')
+        opcao_ger = raw_input('Gerente logado, o que deseja?\n[1] Cadastrar alguem \n[2] Ativar cadastro\n[3] Buscar usuario\n[4] Verificar estoque\n[5] Deletar usuario\n[6] Buscar item\n[7] Atualizar usuario\n[8]Quantidade de usuarios cadastrados\n[9]Alterar perfil de usuario\n[10]Cadastrar item\n[11]Deletar item\n[12]Ver graficos\n[13]Dados do sistema\n[14]Verificar operacoes de um dado usuario\n[156] Deslogar\n')
     
     if opcao_ger=='1':
         log(username, 'Realizar cadastro')
@@ -301,7 +301,13 @@ def func_gerente(username):
     elif opcao_ger=='12':
         log(username, 'Verificar graficos')
         graficos()
-    
+    elif opcao_ger=='13':
+        log(username, 'Ver dados do sistema')
+        exibe()
+    elif opcao_ger=='14':
+        log(username, 'Ver operacoes de um dado usuario')
+        ver_operacoes()
+     
     if opcao_ger!='156':
         func_gerente(username)
     
