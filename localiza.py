@@ -228,7 +228,8 @@ def verifica_perfil(username):
     for x in lst_usuarios:
         for y in x:
             if y[5]==username:
-                if y[7]=='gerente':
+                log(username, 'Login iniciado')
+                if y[7]=='gerente':                   
                     func_gerente(username)
                     return
                 elif y[7]=='funcionario':
@@ -246,32 +247,46 @@ def func_gerente(username):
         opcao_ger = raw_input('Gerente logado, o que deseja?\n[1] Cadastrar alguem \n[2] Ativar cadastro\n[3] Buscar usuario\n[4] Verificar estoque\n[5] Deletar usuario\n[6] Buscar item\n[7] Atualizar usuario\n[8]Quantidade de usuarios cadastrados\n[9]Alterar perfil de usuario\n[10]Cadastrar item\n[11]Deletar item\n[12]Ver graficos\n[156] Deslogar\n')
     
     if opcao_ger=='1':
+        log(username, 'Realizar cadastro')
         realizar_cadastro()
     elif opcao_ger=='2':
+        log(username, 'Ativar cadastro')
         ativar_cadastro()
     elif opcao_ger=='3':
+        log(username, 'Buscar usuario')
         buscar_usuario()
     elif opcao_ger=='4':
+        log(username, 'Verificar estoque')
         verificar_estoque()
     elif opcao_ger=='5':
+        log(username, 'Deletar usuario')
         deletar_usuario()
     elif opcao_ger=='6':
+        log(username, 'Buscar item')
         buscar_item()
     elif opcao_ger=='7':
+        log(username, 'Atualizar usuario')
         att_usuario()
     elif opcao_ger=='8':
+        log(username, 'Verificar quantidade de usuarios')
         quant_usuarios()
     elif opcao_ger=='9':
+        log(username, 'Alterar perfil de usuario')
         alterar_perfil()
     elif opcao_ger=='10':
+        log(username, 'Cadastrar item')
         cadastrar_item()
     elif opcao_ger=='11':
+        log(username, 'Deletar item')
         deletar_item()
     elif opcao_ger=='12':
-        graficos()        
+        log(username, 'Verificar graficos')
+        graficos()
     
     if opcao_ger!='156':
         func_gerente(username)
+    
+    log(username, 'Login encerrado')
     
     return
 
@@ -286,13 +301,19 @@ def func_cliente(username):
         opcao_cli = raw_input('Cliente logado, o que deseja?\n[1] Alugar carro\n[2]Verificar meu status\n[3]Deslogar\n')
     
     if opcao_cli=='1':
+        log(username, 'Alugar carro')
         alugar_carro(username)
     elif opcao_cli=='2':
+        log(username, 'Verificar status')
         verifica_status(username)
     
     if opcao_cli!='3':
         func_cliente(username)
-
+        
+    log(username, 'Login encerrado')
+    
+    print('Saindo\n')
+    
     return
 
 def ativar_cadastro():
@@ -876,5 +897,18 @@ def atualizar_banco():
     arq.close()
     
     return
-        
+
+def log(username, str_acao):
+    arq = open('log_localiza.txt', 'a')
+    
+    str_hora = 'Hora->' + str(datetime.now().hour) + ':' + str(datetime.now().minute) + ':' + str(datetime.now().second)
+    
+    str_data = ' Data->' + str(datetime.now().day) + '/' + str(datetime.now().month) + '/' + str(datetime.now().year)   
+    
+    arq.writelines(str_hora + str_data + ' Usuario: ' + username + ' Acao: ' + str_acao + '\n')
+    
+    arq.close()
+    
+    return
+
 main()
