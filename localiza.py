@@ -392,7 +392,13 @@ def realizar_cadastro():
         elif x==4:
             entrada_dados = gera_idade(lst_dados[3])
         else:
-            entrada_dados = raw_input('%s' %(lst_perguntas[x]))
+            if x==3:
+                entrada_dados = 'k'
+                while len(entrada_dados)!=8:
+                    entrada_dados = raw_input('%s' %(lst_perguntas[x]))
+            else:                   
+                entrada_dados = raw_input('%s' %(lst_perguntas[x]))
+        
         lst_dados.append(entrada_dados)
         x = x+1
         
