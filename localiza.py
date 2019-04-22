@@ -193,6 +193,28 @@ def iniciar_banco_dados(): #essa funcao tambem devera atualizar estoques, situac
 
     arq.close()
     
+    # perfis pendentes
+    
+    arq = open('perfispendentes_dados.txt', 'r')
+    linha = arq.readlines()
+    lst_add = []
+    k=0
+
+    for x in linha:
+        if k==0:
+            lst_add.append((int(x)))
+            lst_ids_ativos.append((int(x)))
+        elif k==4:
+            lst_add.append((int(x)))
+        else:
+            new = x.replace(x, x[:-1])
+            lst_add.append(new)
+        k = k+1
+        if(len(lst_add)==7):
+            lst_perfispendentes.append(lst_add)
+            k=0
+            lst_add = []
+    
     return
 
 def fazer_login():
@@ -894,6 +916,16 @@ def atualizar_banco():
     for x in lst_estoque:
         arq.writelines((str(x))+'\n')
         
+    arq.close()
+    
+    # perfis pendentes
+    
+    arq = open('perfispendentes.txt', 'w')
+    
+    for x in lst_perfispendentes:
+        for y in x:
+            arq.writelines((str(y))+'\n') 
+            
     arq.close()
     
     return
