@@ -839,6 +839,41 @@ def login_existe(username):
     
     return 1
 
+def ver_operacoes():
+    exibe()
+    
+    id_user = raw_input('Digite o ID do usuario pelo qual deseja buscar operacoes: ')
+    
+    if (int(id_user)) not in lst_ids_ativos:
+        print('O usuario nao esta ativo ou nao consta ou nunca realizou operacoes no sistema.')
+        return
+
+    arq = open('historicotransacoes_dados.txt', 'r')
+    linha = arq.readlines()
+    aux = []
+    lst_historico = []
+    
+    for x in linha:
+        aux.append(x)
+        if len(aux)==6:
+            if (int(aux[0]))==(int(id_user)):
+                lst_historico.append(aux)
+            aux = []
+                
+    print('Historico do usuario: ')
+    
+    for x in lst_historico:
+        print('ID: ' +  str(x[0]))
+        print('Modelo alugado: ' + str(x[1]))
+        print('Data do aluguel: ' + str(x[2]))
+        print('Valor pago: R$ ' + str(x[3]))
+        print('Dias de aluguel: ' + str(x[5]))
+        print('%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%')
+          
+    arq.close()    
+        
+    return
+
 def armazena(info, x):
     if x==1:
         lst_perfispendentes.append(info)
