@@ -28,7 +28,6 @@ lst_perfispendentes = []
 lst_funcionarios = []
 lst_gerentes = []
 lst_usuarios = [lst_gerentes ,lst_clientes, lst_funcionarios]
-lst_tarifasdiarias = [1,2,3]
 lst_dividas = [] # cada item sera uma sublista com indices ID, ID do modelo alugado, data de aluguel, diaria em divida, possiveis multas
 lst_estoque = []
 
@@ -70,8 +69,6 @@ def opcoes_iniciais(x):
         print('Finalizando...')
         sleep(2)
         print('Programa encerrado, Volte sempre!!!')  
-    else:
-        print ('Opção invalida!!')
         
     return 
 
