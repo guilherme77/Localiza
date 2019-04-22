@@ -937,7 +937,7 @@ def atualizar_banco():
     
     # perfis pendentes
     
-    arq = open('perfispendentes.txt', 'w')
+    arq = open('perfispendentes_dados.txt', 'w')
     
     for x in lst_perfispendentes:
         for y in x:
