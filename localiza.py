@@ -740,31 +740,35 @@ def gera_divida(model,dias):
 def graficos():
     ano = raw_input('Digite o ano em que gostaria de observar as vendas: \n')
     
-    arq = open('historicotransacoes.txt','r')
+    arq = open('historicotransacoes_dados.txt','r')
     linha = arq.readlines()
     
     modelos = ['SUV','Sedan','Hatch']
     quant = [0,0,0]
+    aux = []
     
     for x in linha:
-        if (int(linha[4:]))==(int(ano)):
-
-            if (int(linha))==1:
-                quant[0] = quant[0]+1
-            elif (int(linha))==2:
-                quant[1] = quant[1]+1
-            elif (int(linha))==3:
-                quant[2] = quant[2]+1
-
+        aux.append(x)
+        if len(aux)==6:
+            data = aux[2]
+            if (int(data[4:]))==(int(ano)):
+                if aux[1]=='001\n':
+                    quant[0] = quant[0]+1
+                elif aux[1]=='002\n':
+                    quant[1] = quant[1] + 1
+                elif aux[2]=='003\n':
+                    quant[2] = quant[2] + 1
+            aux = []            
+    print quant
     arq.close()
     
-    pp.plot(modelos, quant)
+    pp.bar(modelos, quant, color='red')
     pp.title('Numero de alugueis por modelo no ano %s' %(ano))
     pp.xlabel('Modelos')
     pp.ylabel('Quantidade de alugueis')
 
     pp.show()            
-        
+    
     faixa_etaria = ['18-25','26-35','36-45','46-55','55+']
     quant = []
     quant = [0,0,0,0,0]
@@ -785,7 +789,7 @@ def graficos():
     pp.bar(faixa_etaria, quant, color='blue')
     pp.title('Quantidade de usuarios cadastrados por faixa etaria')
     pp.xticks(faixa_etaria)
-    pp.ylabel('Nº de usuarios')
+    pp.ylabel('Num de usuarios')
     pp.xlabel('Faixa etaria (anos)')
     
     pp.show()
