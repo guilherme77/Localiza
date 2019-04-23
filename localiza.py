@@ -260,11 +260,11 @@ def verifica_perfil(username):
 
 def func_gerente(username):
     opcao_ger = 0
-    tp_libera = ('1','2','3','4', '5', '6', '7','8','9','10','11','12','13','14','156')
+    tp_libera = ('1','2','3','4', '5', '6', '7','8','9','10','11','12','13','14','15','156')
     
     while(opcao_ger not in tp_libera):
-        opcao_ger = raw_input('Gerente logado, o que deseja?\n[1] Cadastrar alguem \n[2] Ativar cadastro\n[3] Buscar usuario\n[4] Verificar estoque\n[5] Deletar usuario\n[6] Buscar item\n[7] Atualizar usuario\n[8]Quantidade de usuarios cadastrados\n[9]Alterar perfil de usuario\n[10]Cadastrar item\n[11]Deletar item\n[12]Ver graficos\n[13]Dados do sistema\n[14]Verificar operacoes de um dado usuario\n[156] Deslogar\n')
-    
+        opcao_ger = raw_input('Gerente logado, o que deseja?\n[1] Cadastrar alguem \n[2] Ativar cadastro\n[3] Buscar usuario\n[4] Verificar estoque\n[5] Deletar usuario\n[6] Buscar item\n[7] Atualizar usuario\n[8]Quantidade de usuarios cadastrados\n[9]Alterar perfil de usuario\n[10]Cadastrar item\n[11]Deletar item\n[12]Ver graficos\n[13]Dados do sistema\n[14]Verificar operacoes de um dado usuario\n[15]Contabilizar divida paga ao sistema\n[156] Deslogar\n')
+        
     if opcao_ger=='1':
         log(username, 'Realizar cadastro')
         realizar_cadastro()
@@ -307,6 +307,9 @@ def func_gerente(username):
     elif opcao_ger=='14':
         log(username, 'Ver operacoes de um dado usuario')
         ver_operacoes()
+    elif opcao_ger=='15':
+        log(username, 'Confirmar o pagamento de divida')
+        fim_aluguel()
      
     if opcao_ger!='156':
         func_gerente(username)
@@ -872,6 +875,40 @@ def ver_operacoes():
           
     arq.close()    
         
+    return
+
+def fim_aluguel():
+    i = 1
+
+    print('Dividas ativas no sistema: ')
+    for x in lst_dividas:
+        print('=>DIVIDA %d' %(i))
+        print('ID: ' +  str(x[0]))
+        print('Modelo alugado: ' + str(x[1]))
+        print('Data do aluguel: ' + str(x[2]))
+        print('Valor pago: R$ ' + str(x[3]))
+        print('Valor pago adicionalmente(multa): R$ ' + str(x[4]))
+        print('Dias de aluguel: ' + str(x[5]))
+        i = i+1
+        print('%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%')
+      
+    qual_div = raw_input('Qual divida deseja constar como paga? Digite o inteiro referente a ela: ')
+
+    if (int(qual_div))>(len(lst_dividas)-1) or (int(qual_div))<1:
+        print('Valor digitado nao aceito pelo sistema.')
+        return
+
+    conf = raw_input('Tem certeza? y ou n\n')
+
+    if conf=='n':
+        print('Operacao cancelada.\n')
+        return
+
+    apag = lst_dividas[(int(qual_div))-1]
+    lst_dividas.remove(apag)
+
+    print('Divida paga. Sistema atualizado!')
+    
     return
 
 def armazena(info, x):
