@@ -321,6 +321,36 @@ def func_gerente(username):
     return
 
 def func_funcionario(username):
+    opcao_func = 0
+    tp_libera = ()
+    
+    while(opcao_func not in tp_libera):
+        opcao_func = raw_input('Funcionario logado. O que deseja?\n[1]Verificar estoque\n[2]Cadastrar_item\n[3]Deletar item\n[4]Buscar usuario\n[5]Fazer cadastro\n[6]Atualizar usuario\n[156]Deslogar\n')
+    
+    if opcao_func=='1':
+        log(username, 'Verificar estoque')
+        verificar_estoque()
+    elif opcao_func=='2':
+        log(username, 'Cadastrar item')
+        cadastrar_item()
+    elif opcao_func=='3':
+        log(username, 'Deletar item')
+        deletar_item()
+    elif opcao_func=='4':
+        log(username, 'Buscar usuario')
+        buscar_usuario()
+    elif opcao_func=='5':
+        log(username, 'Fazer cadastro')
+        realizar_cadastro()
+    elif opcao_func=='6':
+        log(username, 'Atualizar usuario')
+        att_usuario()
+        
+    if opcao_func!='156':
+        func_funcionario()
+    
+    log(username, 'Login encerrado')
+    
     return
 
 def func_cliente(username):
