@@ -247,6 +247,7 @@ def verifica_perfil(username):
     for x in lst_usuarios:
         for y in x:
             if y[5]==username:
+                gera_multa()
                 log(username, 'Login iniciado')
                 if y[7]=='gerente':                   
                     func_gerente(username)
@@ -909,6 +910,31 @@ def fim_aluguel():
 
     print('Divida paga. Sistema atualizado!')
     
+    return
+
+def gera_multa():
+    aux = 0
+    aux2 = []
+    d_aux1='k'
+    d_aux2='k2'
+
+    for x in lst_dividas:
+        aux2 = x
+        data = str(x[2])
+        aux = int(data[4:])
+        d_aux1 = str(aux)+'-'+str(data[2:4])+'-'+str(data[0:2])
+        d_aux2 = str(datetime.now().year)+'-'+str(datetime.now().month)+'-'+str(datetime.now().day)
+        d1 = datetime.strptime(d_aux1, '%Y-%m-%d')
+        d2 = datetime.strptime(d_aux2, '%Y-%m-%d')
+        tempo_atraso = abs((d2 - d1).days)
+
+        if tempo_atraso>x[5]:
+            multa = 0
+            multa = tempo_atraso*tp_multas[(int(x[1]))-1]
+            aux2[4] = multa
+            lst_dividas.remove(x)
+            lst_dividas.append(aux2)
+            
     return
 
 def armazena(info, x):
