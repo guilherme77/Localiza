@@ -32,6 +32,7 @@ lst_dividas = [] # cada item sera uma sublista com indices ID, ID do modelo alug
 lst_estoque = []
 
 tp_diarias = (110, 120, 90)
+tp_multas = (120, 130, 100)
 
 # Funcoes e resto do codigo
 
