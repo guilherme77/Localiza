@@ -937,6 +937,12 @@ def fim_aluguel():
         return
 
     apag = lst_dividas[(int(qual_div))-1]
+    if int(apag[1])==1:
+        lst_estoque[0] = lst_estoque[0] + 1
+    elif int(apag[1])==2:
+        lst_estoque[1] = lst_estoque[1] + 1
+    elif int(apag[1])==3:
+        lst_estoque[2] = lst_estoque[2] + 1
     lst_dividas.remove(apag)
 
     print('Divida paga. Sistema atualizado!')
