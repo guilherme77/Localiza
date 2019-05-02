@@ -721,17 +721,32 @@ def alterar_perfil():
 def cadastrar_item():
     tp_idcarros = ('001','002','003')
     idcarros = '0'
+    novo_item = []
     
     while(idcarros not in tp_idcarros):
         print(tp_idcarros)
         idcarros = raw_input('Digite o ID que voce deseja cadastrar um novo item: [001]SUV [002] Sedan [003]Hatch\n ')
         
-    if idcarros=='001':
-        lst_estoque[0] = lst_estoque[0] + 1
-    elif idcarros=='002':
-        lst_estoque[1] = lst_estoque[1] + 1
-    elif idcarros=='003':
-        lst_estoque[2] = lst_estoque[2] + 1    
+    nome_car = raw_input('Nome do modelo: ')
+    novo_item.append(nome_car)
+    novo_item.append(idcarros)
+    ano_car = raw_input('Ano: ')
+    novo_item.append(ano_car)
+    placa_car = raw_input('Placa do carro: ')
+    novo_item.append(placa_car)
+    chassi_car = raw_input('Numero de chassi: ')
+    novo_item.append(chassi_car)
+    diaria_car = raw_input('Valor da diaria do carro: ')
+    novo_item.append(int(diaria_car))
+    multa_car = raw_input('Valor da multa diaria: ')
+    novo_item.append(int(multa_car))
+    
+    if novo_item[1]=='001':
+        lst_suv.append(novo_item)
+    elif novo_item[1]=='002':
+        lst_sedan.append(novo_item)
+    elif novo_item[1]=='003':
+        lst_hatch.append(novo_item)
     
     verificar_estoque()
     
