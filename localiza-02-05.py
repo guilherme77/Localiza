@@ -722,6 +722,7 @@ def cadastrar_item():
     tp_idcarros = ('001','002','003')
     idcarros = '0'
     novo_item = []
+    chassi_car = 'ias2'
     
     while(idcarros not in tp_idcarros):
         print(tp_idcarros)
@@ -734,7 +735,8 @@ def cadastrar_item():
     novo_item.append(ano_car)
     placa_car = raw_input('Placa do carro: ')
     novo_item.append(placa_car)
-    chassi_car = raw_input('Numero de chassi: ')
+    while(len(chassi_car)!=17):
+        chassi_car = raw_input('Numero de chassi(17 digitos): ')
     novo_item.append(chassi_car)
     diaria_car = raw_input('Valor da diaria do carro: ')
     novo_item.append(int(diaria_car))
@@ -753,29 +755,27 @@ def cadastrar_item():
     return
 
 def deletar_item():
-    tp_idcarros = ('001','002','003')
-    idcarros = '0'
-    
-    while(idcarros not in tp_idcarros):
-        idcarros = raw_input('Digite o ID de qual veiculo deseja adicionar um novo item: [001]SUV [002]Sedan [003]Hatch\n')
-    
-    if idcarros=='001':
-        if lst_estoque[0]==0:
-            print('Estoque desse modelo esta esgotado. Impossivel deletar.\n')
-            return
-        lst_estoque[0] = lst_estoque[0] - 1
-    elif idcarros=='002':
-        if lst_estoque[1]==0:
-            print('Estoque desse modelo esta esgotado. Impossivel deletar.\n')
-            return
-        lst_estoque[1] = lst_estoque[1] - 1
-    elif idcarros=='003':
-        if lst_estoque[2]==0:
-            print('Estoque desse modelo esta esgotado. Impossivel deletar.\n')
-            return
-        lst_estoque[2] = lst_estoque[2] - 1    
-    
     verificar_estoque()
+    
+    chassi_car = raw_input('Digite o numero de chassi que deseja apagar: ')
+    
+    for x in lst_estoque:
+        for y in x: 
+            if y[4]==chassi_car:
+                print('Nome: ' + y[0] + '\n' + 'ID do modelo: ' + y[1] + '\n' + 'Ano: ' + y[2] + '\n' + 'Placa: ' + y[3] + '\n' + 'Chaci: ' + y[4] + '\n' + 'Diaria: ' + str(y[5]) + '\n' + 'Multa: ' + str(y[6]) + '\n')
+                conf = raw_input('Modelo encontrado, deseja realmente apaga-lo do estoque?y ou n\n')
+                if conf=='y':
+                    print('Operacao cancelada.\n')
+                    return
+                delet = y
+                if y[1]=='001':
+                    lst_suv.remove(delet)
+                elif y[1]=='002':
+                    lst_sedan.remove(delet)
+                elif y[1]=='003':
+                    lst_hatch.remove(delet)
+                verificar_estoque()
+                return                                    
     
     return
 
