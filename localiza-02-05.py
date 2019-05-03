@@ -33,6 +33,7 @@ lst_dividas = [] # cada item sera uma sublista com indices ID, ID do modelo alug
 lst_suv = [] # formato nome,id_tipo, ano, placa, chaci, diaria, multa do modelo
 lst_sedan = []
 lst_hatch = []
+lst_alugados = []
 lst_estoque = [lst_suv, lst_sedan, lst_hatch]
 
 tp_diarias = (110, 120, 90)
@@ -174,6 +175,30 @@ def iniciar_banco_dados(): #essa funcao tambem devera atualizar estoques, situac
         k = k+1
         if(len(lst_add)==6):
             lst_dividas.append(lst_add)
+            k=0
+            lst_add = []
+ 
+    #    print(lst_dividas)
+
+    arq.close()
+    
+    # itens alugados
+    
+    arq = open('itensalugados_dados.txt', 'r')
+    linha = arq.readlines()
+    lst_add = []
+    k=0
+
+    for x in linha:
+        if k==5 or k==6:
+            lst_add.append((int(x)))
+        else:
+            new = x.replace(x, x[:-1])
+            lst_add.append(new)
+        
+        k = k+1
+        if(len(lst_add)==7):
+            lst_alugados.append(lst_add)
             k=0
             lst_add = []
  
@@ -569,12 +594,11 @@ def buscar_item():
     for x in lst_dividas:
         if x[1]==iden:
             print('Modelo encontrado, atualmente encontra-se alugado.\n')
-            for y in lst_estoque:
-                for z in y:
-                    if iden==y[4]:
-                        print('Nome: ' + x[0] + '\n' + 'ID do modelo: ' + x[1] + '\n' + 'Ano: ' + x[2] + '\n' + 'Placa: ' + x[3] + '\n' + 'Chaci: ' + x[4] + '\n' + 'Diaria: ' + str(x[5]) + '\n' + 'Multa: ' + str(x[6]) + '\n')
-                        print('ID de usuario que alugou: ' + str(x[0]) + '\n' + 'Data do aluguel | MMDDAAAA: ' + x[2] + '\n' + 'Diaria de contrato: ' + str(x[3]) + '\n' + 'Dias de contrato: ' + str(x[5]) + ' reais\n' + 'Divida em aberto: ' + str(x[4]) + 'reais\n')
-                        return
+            for y in lst_alugados: # alterar quando criar lista e funcao de aluugados
+                if iden==y[4]:
+                    print('Nome: ' + y[0] + '\n' + 'ID do modelo: ' + y[1] + '\n' + 'Ano: ' + y[2] + '\n' + 'Placa: ' + y[3] + '\n' + 'Chaci: ' + y[4] + '\n' + 'Diaria: ' + str(y[5]) + '\n' + 'Multa: ' + str(y[6]) + '\n')
+                    print('ID de usuario que alugou: ' + str(x[0]) + '\n' + 'Data do aluguel | MMDDAAAA: ' + x[2] + '\n' + 'Diaria de contrato: ' + str(x[3]) + '\n' + 'Dias de contrato: ' + str(x[5]) + ' reais\n' + 'Divida em aberto: ' + str(x[4]) + 'reais\n')
+                    return
     
     print('Esse chassi nao existe no sistema.\n')
     
@@ -781,7 +805,7 @@ def deletar_item():
 
 def alugar_carro(username):
     print('ALUGUEL - para cada veiculo alugado, um novo processo de aluguel devera ser feito. Aluguel de no maximo 30 dias.\n')
-    tp_carros = ('001','002','003')
+    opcoes = []
     num_dias = '0'
     qual_alug = '0'
     divida = 0
@@ -795,32 +819,54 @@ def alugar_carro(username):
     for x in lst_dividas:
         if x[0]==id_user:
             if x[4]!=0:
-                print('Voce esta com R$ %d de divida com a empresa; impossivel realizar novo aluguel\n')
+                print('Voce esta com R$ %d de divida (multa) com a empresa; impossivel realizar novo aluguel\n')
                 return
             
-    while(qual_alug not in tp_carros):
-        qual_alug = raw_input('Digite o ID de qual veiculo deseja alugar (1 unidade): \n[001]SUV: diaria R$ 110,00 \n[002]Sedan: diaria R$ 120,00 \n[003]Hatch: diaria R$ 90,00\n')
+    print("ID's: 001 - SUV, 002-SEDAN, 003 - HATCH\n")        
+    i = 1        
+    for x in lst_estoque:
+        for y in x:
+            print('> OPCAO %d' %(i))
+            print('Nome: ' + y[0] + '\n' + 'ID do modelo: ' + y[1] + '\n' + 'Ano: ' + y[2] + '\n' + 'Placa: ' + y[3] + '\n' + 'Chaci: ' + y[4] + '\n' + 'Diaria: ' + str(y[5]) + '\n' + 'Multa: ' + str(y[6]) + '\n')
+            i = i+1
+            opcoes.append(y)
+    print('%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%')
+    
+    tag = True
+    
+    while(tag):
+        qual_alug = raw_input('Digite o inteiro correspondente a opcao do modelo que deseja alugar: ')
+        if ((int(qual_alug))>0) and ((int(qual_alug)) <= len(opcoes)):
+            tag = False
+            
+    i = (int(qual_alug))
+    qual_alug = opcoes[i-1]
+    
+    tag = True
+    while(tag):    
+        num_dias = raw_input('Digite a quantidade de dias que deseja estar em posse do modelo | maximo 30: ')
+        if (int(num_dias) > 0) and (int(num_dias)<31):
+            tag = False
         
-    if lst_estoque[(int(qual_alug))-1]<1:
-        print('Modelo indisponivel no estoque.\n')
-        return
-    else:
-        lst_estoque[(int(qual_alug))-1] = lst_estoque[(int(qual_alug))-1] - 1
-    
-    num_dias = raw_input('Digite a quantidade de dias que deseja estar em posse do modelo: ')
-    
     divida = gera_divida(qual_alug,int(num_dias))
     
     new = []
     data = (str(datetime.now().day)) + ('0'+str(datetime.now().month)) + (str(datetime.now().year))
     
     new.append(id_user)
-    new.append(qual_alug)
+    new.append(qual_alug[4])
     new.append(int(data))
     new.append(divida)
     new.append(0)
     new.append(int(num_dias))
     
+    print('Nome: ' + qual_alug[0] + '\n' + 'ID do modelo: ' + qual_alug[1] + '\n' + 'Ano: ' + qual_alug[2] + '\n' + 'Placa: ' + qual_alug[3] + '\n' + 'Chaci: ' + qual_alug[4] + '\n' + 'Diaria: ' + str(qual_alug[5]) + '\n' + 'Multa: ' + str(qual_alug[6]) + '\n')
+    print('Dias: ' + str(new[5]) + '| ' + 'Diaria resultante: R$ ' + str(new[3]))
+    conf = raw_input('CONFIRMACAO: Deseja realmente realizar esse aluguel?y ou n\n')
+    if conf=='n':
+        print('Operacao cancelada.\n')
+        return
+    lst_alugados.append(qual_alug)
     armazena(new,5)
     
     arq = open('historicotransacoes_dados.txt', 'w')
@@ -830,20 +876,13 @@ def alugar_carro(username):
         
     arq.close()
     
-    print('Aluguel finalizado.\n Modelo: %s\nTempo do aluguel: %d \nValor em divida: R$ %d' %(new[1],new[5],new[3]))
+    print('Aluguel finalizado.\n')
     
     return
 
 def gera_divida(model,dias):
-    valor = 0
-    if model=='001':
-        valor = tp_diarias[0]
-    elif model=='002':
-        valor = tp_diarias[1]
-    elif model=='003':
-        valor = tp_diarias[2]
         
-    valor = valor*dias
+    valor = model[5]*dias
         
     return valor
 
@@ -860,10 +899,11 @@ def verifica_status(username):
         if x[0]==id_user:
             aux.append(x)
             
-    print('Suas dividas atuais com a empresa sao: ordem [id do usuario,id do modelo,data do aluguel, diaria em divida, multa (se existente),tempo definido do aluguel]\n')
+    print('Suas dividas atuais com a empresa sao: \n')
     
     for x in aux:
-        print x
+        print('Chassi do modelo: ' + x[1] + '\n' + 'Data do aluguel (DDMMAAAA): ' + str(x[2]) + '\n' + 'Diaria de contrato: R$ ' + str(x[3]) + '\n' + 'Multa em aberto: R$ ' + str(x[4]) + '\n' + 'Dias validos do aluguel: ' + str(x[5]))
+        print('%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%')
         
     if len(aux)==0:
         print('Voce nao tem dividas ativas.\n')
@@ -1160,13 +1200,24 @@ def atualizar_banco():
 
     arq.close()
     
+    # itens alugados
+    
+    arq = open('itensalugados_dados.txt', 'w')
+
+    for x in lst_alugados:
+        for y in x:
+            arq.writelines((str(y))+'\n')    
+
+    arq.close()
+    
     # estoque
     
     arq = open('estoque_dados.txt', 'w')
 
     for x in lst_estoque:
         for y in x:
-            arq.writelines((str(y))+'\n')    
+            for z in y:
+                arq.writelines((str(z))+'\n')    
 
     arq.close()
     
