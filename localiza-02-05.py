@@ -517,9 +517,9 @@ def buscar_usuario():
                 print("\nUsuario '%d' encontrado " %(int(id_user)), y)
                 ok = 1
                 for z in lst_dividas:
-                    if (int(id_user==z[0])):
+                    if (int(id_user) == z[0]):
                         print('\nO usuario possui dividas coma empresa: ')
-                        print('Usuario: ', z[0], '\nDiarias: ', z[3], '\nMultas: ', z[4])
+                        print('Usuario: ID ' + str(z[0]) + '\nDiarias R$: ' +  str(z[3]) + '\nMultas: R$ ' + str(z[4]))
                     else:
                         print("\nO usuario nao possui dividas com a empresa.\n")
                         
@@ -582,7 +582,7 @@ def buscar_item():
     
     iden = '0'
     
-    iden = raw_input('\nDigite o numero de chassi do modelo que deseja verficar:\n')
+    iden = raw_input('\nDigite o numero de chassi do modelo que deseja verificar:\n')
     
     for x in lst_estoque:
         for y in x:
@@ -597,7 +597,7 @@ def buscar_item():
             for y in lst_alugados: # alterar quando criar lista e funcao de aluugados
                 if iden==y[4]:
                     print('Nome: ' + y[0] + '\n' + 'ID do modelo: ' + y[1] + '\n' + 'Ano: ' + y[2] + '\n' + 'Placa: ' + y[3] + '\n' + 'Chaci: ' + y[4] + '\n' + 'Diaria: ' + str(y[5]) + '\n' + 'Multa: ' + str(y[6]) + '\n')
-                    print('ID de usuario que alugou: ' + str(x[0]) + '\n' + 'Data do aluguel | MMDDAAAA: ' + x[2] + '\n' + 'Diaria de contrato: ' + str(x[3]) + '\n' + 'Dias de contrato: ' + str(x[5]) + ' reais\n' + 'Divida em aberto: ' + str(x[4]) + 'reais\n')
+                    print('ID de usuario que alugou: ' + str(x[0]) + '\n' + 'Data do aluguel | MMDDAAAA: ' + str(x[2]) + '\n' + 'Diaria de contrato: ' + str(x[3]) + '\n' + 'Dias de contrato: ' + str(x[5]) + 'Divida em aberto (multa): ' + str(x[4]) + ' reais\n')
                     return
     
     print('Esse chassi nao existe no sistema.\n')
@@ -612,7 +612,7 @@ def chassis_cadastrados():
             chassis_num.append(x[4])
             
     for x in lst_dividas:
-        chassis_num.append(x[2])
+        chassis_num.append(x[1])
     
     print('Numeros de chassis cadastrados no sistema: ')
     for x in chassis_num:
@@ -811,6 +811,10 @@ def alugar_carro(username):
     divida = 0
     id_user = 0
     
+    if (len(lst_suv) + len(lst_sedan) + len(lst_hatch)) == 0:
+        print("Sem veiculos disponiveis em estoque.\n")
+        return
+    
     for x in lst_usuarios:
         for y in x:
             if y[5]==username:
@@ -860,7 +864,7 @@ def alugar_carro(username):
     new.append(0)
     new.append(int(num_dias))
     
-    print('Nome: ' + qual_alug[0] + '\n' + 'ID do modelo: ' + qual_alug[1] + '\n' + 'Ano: ' + qual_alug[2] + '\n' + 'Placa: ' + qual_alug[3] + '\n' + 'Chaci: ' + qual_alug[4] + '\n' + 'Diaria: ' + str(qual_alug[5]) + '\n' + 'Multa: ' + str(qual_alug[6]) + '\n')
+    print('Nome: ' + qual_alug[0] + '\n' + 'ID do modelo: ' + qual_alug[1] + '\n' + 'Ano: ' + qual_alug[2] + '\n' + 'Placa: ' + qual_alug[3] + '\n' + 'Chassi: ' + qual_alug[4] + '\n' + 'Diaria: ' + str(qual_alug[5]) + '\n' + 'Multa: ' + str(qual_alug[6]) + '\n')
     print('Dias: ' + str(new[5]) + '| ' + 'Diaria resultante: R$ ' + str(new[3]))
     conf = raw_input('CONFIRMACAO: Deseja realmente realizar esse aluguel?y ou n\n')
     if conf=='n':
@@ -868,6 +872,14 @@ def alugar_carro(username):
         return
     lst_alugados.append(qual_alug)
     armazena(new,5)
+    
+    if qual_alug in lst_suv:
+        lst_suv.remove(qual_alug)
+    elif qual_alug in lst_sedan:
+        lst_sedan.remove(qual_alug)
+        print('tirei')
+    elif qual_alug in lst_hatch:
+        lst_hatch.remove(qual_alug)
     
     arq = open('historicotransacoes_dados.txt', 'w')
     
@@ -1063,20 +1075,26 @@ def gera_multa():
     aux2 = []
     d_aux1='k'
     d_aux2='k2'
-
+    
     for x in lst_dividas:
         aux2 = x
         data = str(x[2])
-        aux = int(data[4:])
-        d_aux1 = str(aux)+'-'+str(data[2:4])+'-'+str(data[0:2])
+        print('data', data)
+        aux = int(data[-4:])
+        d_aux1 = str(aux)+'-'+str(data[-6:-4])+'-'+str(data[:-6])
+        print('daux_1', d_aux1)
         d_aux2 = str(datetime.now().year)+'-'+str(datetime.now().month)+'-'+str(datetime.now().day)
+        print('daux_2', d_aux2)
         d1 = datetime.strptime(d_aux1, '%Y-%m-%d')
         d2 = datetime.strptime(d_aux2, '%Y-%m-%d')
-        tempo_atraso = abs((d2 - d1).days)
+        tempo_atraso = abs((d2 - d1).days - 5)
+        print('tempoatraso', tempo_atraso)
 
-        if tempo_atraso>x[5]:
-            multa = 0
-            multa = tempo_atraso*tp_multas[(int(x[1]))-1]
+        if tempo_atraso>0:
+            for y in lst_alugados:
+                if y[4]==x[1]:
+                    multa = 0
+                    multa = tempo_atraso*y[6]
             aux2[4] = multa
             lst_dividas.remove(x)
             lst_dividas.append(aux2)
@@ -1147,10 +1165,10 @@ def exibe():
         for x in lst_usuarios:       
             for y in x:
                 lst_exibe.append(y[k])
-                print lst_exibe
+                #print lst_exibe
                 
                 dict_sistema[lst_infos_tab[k]] = lst_exibe
-                print lst_infos_tab[k]
+                #print lst_infos_tab[k]
     
         if k==len(lst_infos_tab)-1:
             tag = False
