@@ -509,19 +509,21 @@ def realizar_cadastro():
 def buscar_usuario():
     exibe()
     ok = 0
+    div = 0
     id_user = raw_input("\nDigite o id do usuario que deseja localizar: \n")
     
     for x in lst_usuarios:
         for y in x:
             if y[0]==(int(id_user)):
-                print("\nUsuario '%d' encontrado " %(int(id_user)), y)
+                print("\nUsuario '%d' encontrado " %(int(id_user)))
                 ok = 1
                 for z in lst_dividas:
                     if (int(id_user) == z[0]):
-                        print('\nO usuario possui dividas coma empresa: ')
-                        print('Usuario: ID ' + str(z[0]) + '\nDiarias R$: ' +  str(z[3]) + '\nMultas: R$ ' + str(z[4]))
-                    else:
-                        print("\nO usuario nao possui dividas com a empresa.\n")
+                        print('\nO usuario possui dividas com a empresa: ')
+                        print('Usuario: ID ' + str(z[0]) + '\nNumero de chassi do carro: ' + z[1] + '\nDiarias R$: ' +  str(z[3]) + '\nMultas: R$ ' + str(z[4]))
+                        div = div + 1
+    if div==0:
+        print("\nO usuario nao possui dividas com a empresa.\n")
                         
     if ok==0:
         print("\nDesculpe, mas o usuario '%d' nao consta no sistema!\n" %((int(id_user))))
@@ -532,15 +534,15 @@ def verificar_estoque():
     print("\nEstoque atualizado: ")
     print("\n\tModelos SUV [ID 001]: " + str(len(lst_suv)) + " em estoque")
     for x in lst_suv:
-        print('Nome: ' + x[0] + '\n' + 'ID do modelo: ' + x[1] + '\n' + 'Ano: ' + x[2] + '\n' + 'Placa: ' + x[3] + '\n' + 'Chaci: ' + x[4] + '\n' + 'Diaria: ' + str(x[5]) + '\n' + 'Multa: ' + str(x[6]) + '\n')
+        print('Nome: ' + x[0] + '\n' + 'ID do modelo: ' + x[1] + '\n' + 'Ano: ' + x[2] + '\n' + 'Placa: ' + x[3] + '\n' + 'Chassi: ' + x[4] + '\n' + 'Diaria: R$ ' + str(x[5]) + '\n' + 'Multa (por dia): R$ ' + str(x[6]) + '\n')
         print('\n')
     print("\n\tModelos Sedan [ID 002]: " + str(len(lst_sedan)) + " em estoque")
     for x in lst_sedan:
-        print('Nome: ' + x[0] + '\n' + 'ID do modelo: ' + x[1] + '\n' + 'Ano: ' + x[2] + '\n' + 'Placa: ' + x[3] + '\n' + 'Chaci: ' + x[4] + '\n' + 'Diaria: ' + str(x[5]) + '\n' + 'Multa: ' + str(x[6]) + '\n')
+        print('Nome: ' + x[0] + '\n' + 'ID do modelo: ' + x[1] + '\n' + 'Ano: ' + x[2] + '\n' + 'Placa: ' + x[3] + '\n' + 'Chassi: ' + x[4] + '\n' + 'Diaria: R$ ' + str(x[5]) + '\n' + 'Multa (por dia): R$ ' + str(x[6]) + '\n')
         print('\n')
     print("\n\tModelos Hatch [ID 003]: " + str(len(lst_hatch)) + " em estoque")
     for x in lst_hatch:
-        print('Nome: ' + x[0] + '\n' + 'ID do modelo: ' + x[1] + '\n' + 'Ano: ' + x[2] + '\n' + 'Placa: ' + x[3] + '\n' + 'Chaci: ' + x[4] + '\n' + 'Diaria: ' + str(x[5]) + '\n' + 'Multa: ' + str(x[6]) + '\n')
+        print('Nome: ' + x[0] + '\n' + 'ID do modelo: ' + x[1] + '\n' + 'Ano: ' + x[2] + '\n' + 'Placa: ' + x[3] + '\n' + 'Chassi: ' + x[4] + '\n' + 'Diaria: R$ ' + str(x[5]) + '\n' + 'Multa (por dia): R$ ' + str(x[6]) + '\n')
         print('\n')
         
     return
@@ -1036,8 +1038,16 @@ def fim_aluguel():
     print('Dividas ativas no sistema: ')
     for x in lst_dividas:
         print('=>DIVIDA %d' %(i))
-        print('ID: ' +  str(x[0]))
-        print('Modelo alugado: ' + str(x[1]))
+        for y in lst_clientes:
+            if y[0]==x[0]:
+                print('Nome: ' + str(y[1]))
+                print('CPF: ' + str(y[2]))
+        print('ID do usuario: ' +  str(x[0]))
+        print('Chassi do modelo alugado: ' + str(x[1]))
+        for y in lst_alugados:
+            if y[4]==x[1]:
+                print('Modelo: ' + str(y[0]))
+                print('Ano: ' + str(y[2]))
         print('Data do aluguel: ' + str(x[2]))
         print('Valor pago: R$ ' + str(x[3]))
         print('Valor pago adicionalmente(multa): R$ ' + str(x[4]))
@@ -1047,23 +1057,28 @@ def fim_aluguel():
       
     qual_div = raw_input('Qual divida deseja constar como paga? Digite o inteiro referente a ela: ')
 
-    if (int(qual_div))>(len(lst_dividas)-1) or (int(qual_div))<1:
+    if (int(qual_div))>(len(lst_dividas)) or (int(qual_div))<1:
         print('Valor digitado nao aceito pelo sistema.')
         return
 
     conf = raw_input('Tem certeza? y ou n\n')
 
-    if conf=='n':
+    if conf!='y':
         print('Operacao cancelada.\n')
         return
 
     apag = lst_dividas[(int(qual_div))-1]
-    if int(apag[1])==1:
-        lst_estoque[0] = lst_estoque[0] + 1
-    elif int(apag[1])==2:
-        lst_estoque[1] = lst_estoque[1] + 1
-    elif int(apag[1])==3:
-        lst_estoque[2] = lst_estoque[2] + 1
+    
+    for x in lst_alugados:
+        if x[4]==apag[1]:
+            if x[1]=='001':
+                lst_suv.append(x)
+            elif x[1]=='002':
+                lst_sedan.append(x)
+            elif x[1]=='003':
+                lst_hatch.append(x)
+            lst_alugados.remove(x)
+
     lst_dividas.remove(apag)
 
     print('Divida paga. Sistema atualizado!')
@@ -1079,16 +1094,16 @@ def gera_multa():
     for x in lst_dividas:
         aux2 = x
         data = str(x[2])
-        print('data', data)
+        #print('data', data)
         aux = int(data[-4:])
         d_aux1 = str(aux)+'-'+str(data[-6:-4])+'-'+str(data[:-6])
-        print('daux_1', d_aux1)
+        #print('daux_1', d_aux1)
         d_aux2 = str(datetime.now().year)+'-'+str(datetime.now().month)+'-'+str(datetime.now().day)
-        print('daux_2', d_aux2)
+        #print('daux_2', d_aux2)
         d1 = datetime.strptime(d_aux1, '%Y-%m-%d')
         d2 = datetime.strptime(d_aux2, '%Y-%m-%d')
         tempo_atraso = abs((d2 - d1).days - 5)
-        print('tempoatraso', tempo_atraso)
+        #print('tempoatraso', tempo_atraso)
 
         if tempo_atraso>0:
             for y in lst_alugados:
