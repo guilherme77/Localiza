@@ -565,22 +565,37 @@ def deletar_usuario():
             return         
             
     print('Usuario encontrado. Nao possui dividas pendentes. Apagando ...\n')
-    index = 0
+    
+    arq = open('historicotransacoes_dados.txt', 'r')
+    linha = arq.readlines()
+    aux = []
+    aux2 = []
+    for x in linha:
+        aux.append(x)
+        if len(aux)==6:
+            aux2.append(aux)
+            if int(quem_del)==int(aux[0]):
+                aux2.remove(aux)
+            aux = []
+    arq.close()
+    arq = open('historicotransacoes_dados.txt', 'w')
+    for x in aux2:
+        for y in x:
+            arq.writelines((str(y))+'\n')
+    arq.close()
+    
     for z in lst_usuarios:
         for w in z:
-            if w[0]==(int(quem_del)):
-                print lst_clientes
-                print w
+            if int(w[0])==(int(quem_del)):
                 lst_ids_ativos.remove(w[0])
-                if index==0:
+                if w[7]=='gerente':
                     lst_gerentes.remove(w)
-                elif index==1:
+                elif w[7]=='cliente':
                     lst_clientes.remove(w)
-                elif index==2:
+                elif w[7]=='funcionario':
                     lst_funcionarios.remove(w)
-        index = index + 1                                        
     
-        return                                  
+    return                                  
 
 def buscar_item():
     chassis_cadastrados()
