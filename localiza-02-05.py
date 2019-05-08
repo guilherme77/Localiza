@@ -886,7 +886,7 @@ def alugar_carro(username):
     elif qual_alug in lst_hatch:
         lst_hatch.remove(qual_alug)
     
-    arq = open('historicotransacoes_dados.txt', 'w')
+    arq = open('historicotransacoes_dados.txt', 'a')
     
     for x in new:
         arq.writelines((str(x))+'\n')
@@ -964,15 +964,19 @@ def graficos():
     for x in linha:
         aux.append(x)
         if len(aux)==6:
-            data = aux[2]
-            if (int(data[4:]))==(int(ano)):
-                if aux[1]=='001\n':
-                    quant[0] = quant[0]+1
-                elif aux[1]=='002\n':
-                    quant[1] = quant[1] + 1
-                elif aux[2]=='003\n':
-                    quant[2] = quant[2] + 1
-            aux = []            
+            for y in lst_estoque:
+                for z in y:
+                    if (z[4]+'\n')==aux[1]: 
+                        data = aux[2]
+                        if (int(data[-5:]))==(int(ano)):
+                            print('eae man kkk')
+                            if int(z[1])==1:
+                                quant[0] = quant[0]+1
+                            elif int(z[1])==2:
+                                quant[1] = quant[1] + 1
+                            elif int(z[2])==3:
+                                quant[2] = quant[2] + 1
+                            aux = []            
     print quant
     arq.close()
     
