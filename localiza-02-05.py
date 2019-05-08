@@ -305,10 +305,10 @@ def verifica_perfil(username):
 
 def func_gerente(username):
     opcao_ger = 0
-    tp_libera = ('1','2','3','4', '5', '6', '7','8','9','10','11','12','13','14','15','156')
+    tp_libera = ('1','2','3','4', '5', '6', '7','8','9','10','11','12','13','14','15','16', '156')
     
     while(opcao_ger not in tp_libera):
-        opcao_ger = raw_input('Gerente logado, o que deseja?\n[1] Cadastrar alguem \n[2] Ativar cadastro\n[3] Buscar usuario\n[4] Verificar estoque\n[5] Deletar usuario\n[6] Buscar item\n[7] Atualizar usuario\n[8]Quantidade de usuarios cadastrados\n[9]Alterar perfil de usuario\n[10]Cadastrar item\n[11]Deletar item\n[12]Ver graficos\n[13]Dados do sistema\n[14]Verificar operacoes de um dado usuario\n[15]Contabilizar divida paga ao sistema\n[156] Deslogar\n')
+        opcao_ger = raw_input('Gerente logado, o que deseja?\n[1] Cadastrar alguem \n[2] Ativar cadastro\n[3] Buscar usuario\n[4] Verificar estoque\n[5] Deletar usuario\n[6] Buscar item\n[7] Atualizar usuario\n[8]Quantidade de usuarios cadastrados\n[9]Alterar perfil de usuario\n[10]Cadastrar item\n[11]Deletar item\n[12]Ver graficos\n[13]Dados do sistema\n[14]Verificar operacoes de um dado usuario\n[15]Contabilizar divida paga ao sistema\n[16]Limpar lista de perfis pendentes\n[156] Deslogar\n')
     
     if opcao_ger=='1':
         log(username, 'Realizar cadastro')
@@ -355,6 +355,9 @@ def func_gerente(username):
     elif opcao_ger=='15':
         log(username, 'Confirmar o pagamento de divida')
         fim_aluguel()
+    elif opcao_ger=='16':
+        log(username, 'Limpar perfis pendentes')
+        limpar_perfispendentes()
     
     if opcao_ger!='156':
         func_gerente(username)
@@ -558,7 +561,7 @@ def deletar_usuario():
     for x in lst_dividas:
         if x[0]==(int(quem_del)):
             print('O usuario escolhido possui dividas com a empresa. Nao eh possivel apaga-lo\n')
-            print(x)
+            print('ID do usuario: ' + str(x[0]) + '\n' + 'Numero de chassi do modelo alugado: ' + str(x[1]) + '\n' + 'Data do aluguel (DDMMAAAA): ' + str(x[2]) + '\n' + 'Dias de aluguel: ' + str(x[5]) + '\n' + 'Valor do aluguel: R$ ' + str(x[3]) + '\n' + 'Multa (se existente): R$ ' + str(x[4]))
             return         
             
     print('Usuario encontrado. Nao possui dividas pendentes. Apagando ...\n')
@@ -924,6 +927,26 @@ def verifica_status(username):
     
     return
 
+def limpar_perfispendentes():
+    
+    print('LISTA DE PENDENTES:\n')
+    
+    for x in lst_perfispendentes:
+        print('Nome: ' + str(x[1]) + '\nCPF: ' + str(x[2]))
+        print('\n>>>PROXIMO:\n')
+        
+    op = raw_input('Deseja realmente apagar a lista?y para continuar: ')
+    if op!='y':
+        print('Operacao cancelada!\n')
+        return
+    
+    for x in lst_perfispendentes:
+        lst_perfispendentes.remove(x)
+    
+    print('Lista vazia!')
+    
+    return
+
 def graficos():
     ano = raw_input('Digite o ano em que gostaria de observar as vendas: \n')
     
@@ -1138,7 +1161,7 @@ def armazena(info, x):
 
 def gera_id_user():
     while(1):
-        id_user = rd.randint(2,10)
+        id_user = rd.randint(2,100)
         if not id_user in lst_ids_ativos:
             break
 
