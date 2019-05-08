@@ -602,7 +602,7 @@ def buscar_item():
             for y in lst_alugados: # alterar quando criar lista e funcao de aluugados
                 if iden==y[4]:
                     print('Nome: ' + y[0] + '\n' + 'ID do modelo: ' + y[1] + '\n' + 'Ano: ' + y[2] + '\n' + 'Placa: ' + y[3] + '\n' + 'Chaci: ' + y[4] + '\n' + 'Diaria: ' + str(y[5]) + '\n' + 'Multa: ' + str(y[6]) + '\n')
-                    print('ID de usuario que alugou: ' + str(x[0]) + '\n' + 'Data do aluguel | MMDDAAAA: ' + str(x[2]) + '\n' + 'Diaria de contrato: ' + str(x[3]) + '\n' + 'Dias de contrato: ' + str(x[5]) + 'Divida em aberto (multa): ' + str(x[4]) + ' reais\n')
+                    print('ID de usuario que alugou: ' + str(x[0]) + '\n' + 'Data do aluguel | MMDDAAAA: ' + str(x[2]) + '\n' + 'Diaria de contrato: ' + str(x[3]) + '\n' + 'Dias de contrato: ' + str(x[5]) + '\nDivida em aberto (multa): ' + str(x[4]) + ' reais\n')
                     return
     
     print('Esse chassi nao existe no sistema.\n')
@@ -929,6 +929,10 @@ def verifica_status(username):
 
 def limpar_perfispendentes():
     
+    if len(lst_perfispendentes)==0:
+        print('Nao ha perfis pendentes!\n')
+        return
+    
     print('LISTA DE PENDENTES:\n')
     
     for x in lst_perfispendentes:
@@ -1125,10 +1129,10 @@ def gera_multa():
         #print('daux_2', d_aux2)
         d1 = datetime.strptime(d_aux1, '%Y-%m-%d')
         d2 = datetime.strptime(d_aux2, '%Y-%m-%d')
-        tempo_atraso = abs((d2 - d1).days - 5)
+        tempo_atraso = abs((d2 - d1).days)
         #print('tempoatraso', tempo_atraso)
 
-        if tempo_atraso>0:
+        if tempo_atraso>x[5]:
             for y in lst_alugados:
                 if y[4]==x[1]:
                     multa = 0
