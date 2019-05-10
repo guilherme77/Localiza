@@ -476,7 +476,7 @@ def ativar_cadastro():
     return
 
 def realizar_cadastro():
-    lst_perguntas = ['ID','\nNome: ', '\nCPF: ','\nData de nascimento: sequecia oito digitos numericos sem espacos entre si - diamesano: ', 'idade', '\nLogin desejado: ', '\nSenha escolhida: ']
+    lst_perguntas = ['ID','\nNome: ', '\nCPF: ','\nData de nascimento: sequencia oito digitos numericos sem espacos entre si - diamesano: ', 'idade', '\nLogin desejado: ', '\nSenha escolhida: ']
     lst_dados = []
     x = 0
     
@@ -488,9 +488,10 @@ def realizar_cadastro():
             entrada_dados = gera_idade(lst_dados[3])
         else:
             if x==3:
-                entrada_dados = 'k'
-                while len(entrada_dados)!=8:
+                ok = 0
+                while ok!=1:
                     entrada_dados = raw_input('%s' %(lst_perguntas[x]))
+                    ok = verif_data(entrada_dados)
             elif x==5:
                 ok = 0
                 while ok==0:
@@ -662,8 +663,10 @@ def att_usuario():
     att_cpf = raw_input('CPF: \n')
     dados_novos.append(att_cpf)
     att_datanasc = '98'
-    while len(att_datanasc)!=8:
+    ok = 0
+    while ok!=1:
         att_datanasc = raw_input('Data de nascimento: \n')
+        ok = verif_data(att_datanasc)
     dados_novos.append(att_datanasc)
     att_idade = gera_idade(att_datanasc)
     dados_novos.append(att_idade)
@@ -696,6 +699,24 @@ def att_usuario():
                     lst_funcionarios.append(aux)    
         
     return
+
+def verif_data(dados):
+    tp_numeros = ('0','1','2','3','4','5','6','7','8','9')
+    aux = []
+    
+    for x in dados:
+        aux.append(x)
+        
+    for x in aux:
+        if x not in tp_numeros:
+            print('Voce usou caracteres nao-numericos, data invalida!\n')
+            return 0
+        
+    if len(dados)!=8:
+        print('Voce nao disponibilizou a data no formato de oito digitos inteiros sem espacos, data invalida.\n')
+        return 0
+    
+    return 1
                      
 def quant_usuarios():
     quant = 0
@@ -769,7 +790,6 @@ def cadastrar_item():
     chassi_car = 'ias2'
     
     while(idcarros not in tp_idcarros):
-        print(tp_idcarros)
         idcarros = raw_input('Digite o ID que voce deseja cadastrar um novo item: [001]SUV [002] Sedan [003]Hatch\n ')
         
     nome_car = raw_input('Nome do modelo: ')
