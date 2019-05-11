@@ -473,7 +473,7 @@ def ativar_cadastro():
     return
 
 def realizar_cadastro():
-    lst_perguntas = ['ID','\nNome: ', '\nCPF: ','\nData de nascimento: sequencia oito digitos numericos sem espacos entre si - diamesano: ', 'idade', '\nLogin desejado: ', '\nSenha escolhida: ']
+    lst_perguntas = ['ID','\nNome: ', '\nCPF, sem espacos, tracos ou pontos, 11 dig: ','\nData de nascimento: sequencia oito digitos numericos sem espacos entre si - diamesano: ', 'idade', '\nLogin desejado: ', '\nSenha escolhida: ']
     lst_dados = []
     x = 0
     
@@ -494,6 +494,11 @@ def realizar_cadastro():
                 while ok==0:
                     entrada_dados = raw_input('%s' %(lst_perguntas[x]))
                     ok = login_existe(entrada_dados)
+            elif x==2:
+                ok = 0
+                while ok==0:
+                    entrada_dados = raw_input('%s' %(lst_perguntas[x]))
+                    ok = verif_cpf(entrada_dados)
             else:                   
                 entrada_dados = raw_input('%s' %(lst_perguntas[x]))
         
@@ -679,7 +684,10 @@ def att_usuario(username):
     
     att_nome = raw_input('Nome: \n')
     dados_novos.append(att_nome)
-    att_cpf = raw_input('CPF: \n')
+    ok = 0
+    while(ok==0):
+        att_cpf = raw_input('CPF, 11 dig, sem tracos, espacos ou pontos: \n')
+        ok = verif_cpf(att_cpf)
     dados_novos.append(att_cpf)
     att_datanasc = '98'
     ok = 0
@@ -720,16 +728,11 @@ def att_usuario(username):
     return
 
 def verif_data(dados):
-    tp_numeros = ('0','1','2','3','4','5','6','7','8','9')
-    aux = []
-    
-    for x in dados:
-        aux.append(x)
-        
-    for x in aux:
-        if x not in tp_numeros:
-            print('Voce usou caracteres nao-numericos, data invalida!\n')
-            return 0
+    try:
+        int(dados)
+    except ValueError:
+        print('Voce usou caracteres nao-numericos, data invalida!\n')
+        return 0
         
     if len(dados)!=8:
         print('Voce nao disponibilizou a data no formato de oito digitos inteiros sem espacos, data invalida.\n')
@@ -1210,6 +1213,19 @@ def gera_multa():
             lst_dividas.append(aux2)
             
     return
+
+def verif_cpf(dados):
+    if len(dados)!=11:
+        print('CPF no formato errado!\n')
+        return 0
+    
+    try:
+        int(dados)
+    except ValueError:
+        print('CPF invalido, fora do formato pedido.\n')
+        return 0
+    
+    return 1 
           
 def armazena(info, x):
     if x==1:
