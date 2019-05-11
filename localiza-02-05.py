@@ -36,9 +36,6 @@ lst_hatch = []
 lst_alugados = []
 lst_estoque = [lst_suv, lst_sedan, lst_hatch]
 
-tp_diarias = (110, 120, 90)
-tp_multas = (120, 130, 100)
-
 # Funcoes e resto do codigo
 
 def main():
@@ -272,7 +269,7 @@ def fazer_login():
         verifica_perfil(nome_usuario)
     else:
         while(opcao not in tp_opcao):    
-            opcao = raw_input("Algo deu errado. Deseja tentar logar novamente? y ou n")
+            opcao = raw_input("Algo deu errado. Deseja tentar logar novamente? y ou n\n")
         if opcao=='y':
             fazer_login()
     return   
@@ -318,25 +315,25 @@ def func_gerente(username):
         ativar_cadastro()
     elif opcao_ger=='3':
         log(username, 'Buscar usuario')
-        buscar_usuario()
+        buscar_usuario(username)
     elif opcao_ger=='4':
         log(username, 'Verificar estoque')
         verificar_estoque()
     elif opcao_ger=='5':
         log(username, 'Deletar usuario')
-        deletar_usuario()
+        deletar_usuario(username)
     elif opcao_ger=='6':
         log(username, 'Buscar item')
         buscar_item()
     elif opcao_ger=='7':
         log(username, 'Atualizar usuario')
-        att_usuario()
+        att_usuario(username)
     elif opcao_ger=='8':
         log(username, 'Verificar quantidade de usuarios')
         quant_usuarios()
     elif opcao_ger=='9':
         log(username, 'Alterar perfil de usuario')
-        alterar_perfil()
+        alterar_perfil(username)
     elif opcao_ger=='10':
         log(username, 'Cadastrar item')
         cadastrar_item()
@@ -348,10 +345,10 @@ def func_gerente(username):
         graficos()
     elif opcao_ger=='13':
         log(username, 'Ver dados do sistema')
-        exibe()
+        exibe('gerente')
     elif opcao_ger=='14':
         log(username, 'Ver operacoes de um dado usuario')
-        ver_operacoes()
+        ver_operacoes(username)
     elif opcao_ger=='15':
         log(username, 'Confirmar o pagamento de divida')
         fim_aluguel()
@@ -368,10 +365,10 @@ def func_gerente(username):
 
 def func_funcionario(username):
     opcao_func = 0
-    tp_libera = ()
+    tp_libera = ('1','2','3','4','5','6','156')
     
     while(opcao_func not in tp_libera):
-        opcao_func = raw_input('Funcionario logado. O que deseja?\n[1]Verificar estoque\n[2]Cadastrar_item\n[3]Deletar item\n[4]Buscar usuario\n[5]Fazer cadastro\n[6]Atualizar usuario\n[156]Deslogar\n')
+        opcao_func = raw_input('Funcionario logado. O que deseja?\n[1]Verificar estoque\n[2]Cadastrar_item\n[3]Deletar item\n[4]Buscar usuario\n[5]Fazer cadastro\n[6]Atualizar usuario\n[7]Confirmar pagamento de divida\n[156]Deslogar\n')
     
     if opcao_func=='1':
         log(username, 'Verificar estoque')
@@ -384,16 +381,19 @@ def func_funcionario(username):
         deletar_item()
     elif opcao_func=='4':
         log(username, 'Buscar usuario')
-        buscar_usuario()
+        buscar_usuario(username)
     elif opcao_func=='5':
         log(username, 'Fazer cadastro')
         realizar_cadastro()
     elif opcao_func=='6':
         log(username, 'Atualizar usuario')
-        att_usuario()
+        att_usuario(username)
+    elif opcao_func=='7':
+        log(username, 'Confirmar o pagamento de divida')
+        fim_aluguel()
         
     if opcao_func!='156':
-        func_funcionario()
+        func_funcionario(username)
     
     log(username, 'Login encerrado')
     
@@ -510,8 +510,11 @@ def realizar_cadastro():
     
     return
 
-def buscar_usuario():
-    exibe()
+def buscar_usuario(username):
+    for x in lst_usuarios:
+        for y in x:
+            if y[5]==username:
+                exibe(y[7])
     ok = 0
     div = 0
     id_user = raw_input("\nDigite o id do usuario que deseja localizar: \n")
@@ -551,8 +554,11 @@ def verificar_estoque():
         
     return
 
-def deletar_usuario():
-    exibe()
+def deletar_usuario(username):
+    for x in lst_usuarios:
+        for y in x:
+            if y[5]==username:
+                exibe(y[7])
    
     quem_del = '0'
     
@@ -641,10 +647,13 @@ def chassis_cadastrados():
         
     return
 
-def att_usuario():  
+def att_usuario(username):  
     print('Logins dos usuarios cadastrados no sistema: \n')
     dados_novos = []
-    exibe()
+    for x in lst_usuarios:
+        for y in x:
+            if y[5]==username:
+                exibe(y[7])
     
     quem_att = raw_input('\nDigite o id de quem deseja atualizar: ')
     
@@ -732,8 +741,11 @@ def quant_usuarios():
     
     return
 
-def alterar_perfil():
-    exibe()
+def alterar_perfil(username):
+    for x in lst_usuarios:
+        for y in x:
+            if y[5]==username:
+                exibe(y[7])
     quem_alterar = '0'
     tp_perfil = ('gerente', 'funcionario', 'cliente')
     novo_perfil = 'aleat'
@@ -1063,8 +1075,11 @@ def login_existe(username):
     
     return 1
 
-def ver_operacoes():
-    exibe()
+def ver_operacoes(username):
+    for x in lst_usuarios:
+        for y in x:
+            if y[5]==username:
+                exibe(y[7])
     
     id_user = raw_input('Digite o ID do usuario pelo qual deseja buscar operacoes: ')
     
@@ -1235,26 +1250,46 @@ def gera_idade(data_nasc):
                 
     return idade
 
-def exibe():
+def exibe(perfil):
     dict_sistema = {}
     lst_exibe = []
     lst_infos_tab = ['ID', 'Nome', 'CPF', 'Data de nasc', 'Idade', 'Login', 'Senha', 'Perfil']
     tag = True
     k=0
 
-    while(tag):
-        for x in lst_usuarios:       
-            for y in x:
-                lst_exibe.append(y[k])
-                #print lst_exibe
+    if perfil=='gerente':
+        while(tag):
+            for x in lst_usuarios:       
+                for y in x:
+                    lst_exibe.append(y[k])
+                    #print lst_exibe
                 
-                dict_sistema[lst_infos_tab[k]] = lst_exibe
-                #print lst_infos_tab[k]
+                    dict_sistema[lst_infos_tab[k]] = lst_exibe
+                    #print lst_infos_tab[k]
     
-        if k==len(lst_infos_tab)-1:
-            tag = False
-        k+=1
-        lst_exibe = []
+            if k==len(lst_infos_tab)-1:
+                tag = False
+            k+=1
+            lst_exibe = []
+    elif perfil=='funcionario':
+        while(tag):
+            for x in lst_usuarios:
+                for y in x:
+                    if k!=6:
+                        lst_exibe.append(y[k])
+                        #print lst_exibe
+                
+                        dict_sistema[lst_infos_tab[k]] = lst_exibe
+                        #print lst_infos_tab[k]
+                    elif k==6:
+                        lst_exibe.append('----')
+                        dict_sistema[lst_infos_tab[k]] = lst_exibe
+    
+            if k==len(lst_infos_tab)-1:
+                tag = False
+            k+=1
+            lst_exibe = []
+        
 
     frame = pd.DataFrame(dict_sistema)
     print frame  
