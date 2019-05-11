@@ -362,7 +362,7 @@ def func_gerente(username):
 
 def func_funcionario(username):
     opcao_func = 0
-    tp_libera = ('1','2','3','4','5','6','156')
+    tp_libera = ('1','2','3','4','5','6','7','156')
     
     while(opcao_func not in tp_libera):
         opcao_func = raw_input('Funcionario logado. O que deseja?\n[1]Verificar estoque\n[2]Cadastrar_item\n[3]Deletar item\n[4]Buscar usuario\n[5]Fazer cadastro\n[6]Atualizar usuario\n[7]Confirmar pagamento de divida\n[156]Deslogar\n')
@@ -592,7 +592,7 @@ def deletar_usuario(username):
     arq = open('historicotransacoes_dados.txt', 'w')
     for x in aux2:
         for y in x:
-            arq.writelines((str(y))+'\n')
+            arq.writelines((str(y)))
     arq.close()
     
     for z in lst_usuarios:
@@ -675,7 +675,6 @@ def att_usuario(username):
     for x in lst_dividas:
         if x[0]==(int(quem_att)):
             print('O usuario possui dividas com a empresa; atualizacao de perfil indisponivel\n')
-            print(x)
             return
     
     att_nome = raw_input('Nome: \n')
@@ -769,7 +768,7 @@ def alterar_perfil(username):
         
     for x in lst_dividas:
         if x[0]==(int(quem_alterar)):
-            print('Usuario pendente na lista de dividas. Impossivel alterar perfil agora', x)
+            print('Usuario pendente na lista de dividas. Impossivel alterar perfil agora')
             return
     
     k = 0
@@ -1126,6 +1125,10 @@ def ver_operacoes(username):
  
 def fim_aluguel():
     i = 1
+    
+    if len(lst_dividas)==0:
+        print('Nao ha dividas no sistema!\n')
+        return
 
     print('Dividas ativas no sistema: ')
     for x in lst_dividas:
@@ -1229,8 +1232,9 @@ def armazena(info, x):
     return
 
 def gera_id_user():
+    x = (len(lst_gerentes) + len(lst_funcionarios) + len(lst_clientes))*2
     while(1):
-        id_user = rd.randint(2,100)
+        id_user = rd.randint(2,x)
         if not id_user in lst_ids_ativos:
             break
 
