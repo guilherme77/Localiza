@@ -738,6 +738,36 @@ def verif_data(dados):
         print('Voce nao disponibilizou a data no formato de oito digitos inteiros sem espacos, data invalida.\n')
         return 0
     
+    ano = int(dados[4:])
+    
+    if ano>datetime.now().year:
+        print('Voce nao nasceu no futuro.\n')
+        return 0
+    elif ano<1900:
+        print('Voce nao pode ser tao velho.\n')
+        return 0
+    
+    mes = int(dados[2:4]) 
+    
+    if mes<1 or mes>12:
+        print('Esse mes nao existe.\n')
+        return 0        
+    
+    dia = int(dados[:2])
+    
+    if mes==2:
+        if dia<0 or dia>29:
+            print('Esse dia nao existe nesse mes.\n')
+            return 0
+    elif (mes==1) or (mes==3) or (mes==5) or (mes==7) or (mes==8) or (mes==10) or (mes==12):    
+        if dia<0 or dia>31:
+            print('Esse dia nao existe para esse mes.\n')
+            return 0
+    else:
+        if dia<0 or dia>30:
+            print('Esse dia nao existe para esse mes.\n')
+            return 0
+        
     return 1
                      
 def quant_usuarios():
@@ -1267,17 +1297,13 @@ def gera_idade(data_nasc):
 #    print('mes', mes_nasc)
 #    print('ano', ano_nasc)
     
-    if ano_nasc > (datetime.now().year+100):
-        print ('Voce nasceu no futuro?')
-    elif ano_nasc < 1900:
-        print ('Nao e possivel calcular para antes de 1900, você não pode ser tão old')
-    else:
-        idade = datetime.now().year - ano_nasc
-        if datetime.now().month < mes_nasc:
+
+    idade = datetime.now().year - ano_nasc
+    if datetime.now().month < mes_nasc:
+        idade = idade - 1
+    elif datetime.now().month == mes_nasc:
+        if datetime.now().day < dia_nasc:
             idade = idade - 1
-        elif datetime.now().month == mes_nasc:
-            if datetime.now().day > dia_nasc:
-                idade = idade - 1
                 
     return idade
 
