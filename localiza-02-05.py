@@ -1374,7 +1374,7 @@ def log(username, str_acao):
     
     str_data = ' Data->' + str(datetime.now().day) + '/' + str(datetime.now().month) + '/' + str(datetime.now().year)   
     
-    arq.writelines(str_hora + str_data + ' Usuario: ' + username + ' Acao: ' + str_acao + '\n')
+    arq.writelines(str_hora +' | ' + str_data + ' | ' + ' | Usuario: ' + username + ' | Acao: ' + str_acao + '\n')
     
     arq.close()
     
