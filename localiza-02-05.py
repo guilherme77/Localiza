@@ -28,7 +28,6 @@ lst_perfispendentes = []
 lst_funcionarios = []
 lst_gerentes = []
 lst_usuarios = [lst_gerentes ,lst_clientes, lst_funcionarios]
-lst_tarifasdiarias = [1,2,3]
 lst_dividas = [] # cada item sera uma sublista com indices ID, ID do modelo alugado, data de aluguel, diaria em divida, possiveis multas
 lst_suv = [] # formato nome,id_tipo, ano, placa, chaci, diaria, multa do modelo
 lst_sedan = []
@@ -40,7 +39,7 @@ lst_estoque = [lst_suv, lst_sedan, lst_hatch]
 
 def main():
     print('Iniciando sistema ...\n')
-    print('Locadora de Vans Localiza, bem-vindo(a)!\n')
+    print('Locadora de Carros Localiza, bem-vindo(a)!\n')
     
     inicia_sistema()
 
@@ -48,7 +47,7 @@ def inicia_sistema():
     x = 0
     while(tag):
         opcoes_iniciais(x)
-        op = raw_input('Encerrar sistema?y ou n\n')
+        op = raw_input('Encerrar sistema?y para continuar\n')
         if op=='y':
             atualizar_banco()
             break
@@ -72,8 +71,6 @@ def opcoes_iniciais(x):
         print('Finalizando...')
         sleep(2)
         print('Programa encerrado, Volte sempre!!!')  
-    else:
-        print ('Opção invalida!!')
         
     return 
 
@@ -269,7 +266,7 @@ def fazer_login():
         verifica_perfil(nome_usuario)
     else:
         while(opcao not in tp_opcao):    
-            opcao = raw_input("Algo deu errado. Deseja tentar logar novamente? y ou n\n")
+            opcao = raw_input("Algo deu errado. Deseja tentar logar novamente? y para continuar\n")
         if opcao=='y':
             fazer_login()
     return   
@@ -438,7 +435,7 @@ def ativar_cadastro():
         print(x)
         print('\n')
         
-    conf = raw_input('Deseja realmente adicionar alguem ao sistema?y ou n\n')
+    conf = raw_input('Deseja realmente adicionar alguem ao sistema?y para continuar\n')
     
     if conf=='n':
         print('Operacao cancelada.\n')
@@ -514,10 +511,17 @@ def buscar_usuario(username):
     for x in lst_usuarios:
         for y in x:
             if y[5]==username:
-                exibe(y[7])
+                perfil = y[7]
+                exibe(perfil)
     ok = 0
     div = 0
     id_user = raw_input("\nDigite o id do usuario que deseja localizar: \n")
+    
+    if perfil=='funcionario':
+        for x in lst_gerentes:
+            if int(x[0])==int(id_user):
+                print('Esse perfil pertence a um gerente, voce nao possui acesso!\n')
+                return
     
     for x in lst_usuarios:
         for y in x:
@@ -653,9 +657,16 @@ def att_usuario(username):
     for x in lst_usuarios:
         for y in x:
             if y[5]==username:
-                exibe(y[7])
+                perfil = y[7]
+                exibe(perfil)
     
     quem_att = raw_input('\nDigite o id de quem deseja atualizar: ')
+    
+    if perfil=='funcionario':
+        for x in lst_gerentes:
+            if int(x[0])==int(quem_att):
+                print('Esse perfil pertence a um gerente, voce nao tem acesso!\n')
+                return
     
     if (int(quem_att)) not in lst_ids_ativos:
         print('Usuario nao disponivel\n')
@@ -839,7 +850,7 @@ def deletar_item():
         for y in x: 
             if y[4]==chassi_car:
                 print('Nome: ' + y[0] + '\n' + 'ID do modelo: ' + y[1] + '\n' + 'Ano: ' + y[2] + '\n' + 'Placa: ' + y[3] + '\n' + 'Chaci: ' + y[4] + '\n' + 'Diaria: ' + str(y[5]) + '\n' + 'Multa: ' + str(y[6]) + '\n')
-                conf = raw_input('Modelo encontrado, deseja realmente apaga-lo do estoque?y ou n\n')
+                conf = raw_input('Modelo encontrado, deseja realmente apaga-lo do estoque?y para continuar\n')
                 if conf=='y':
                     print('Operacao cancelada.\n')
                     return
@@ -918,7 +929,7 @@ def alugar_carro(username):
     
     print('Nome: ' + qual_alug[0] + '\n' + 'ID do modelo: ' + qual_alug[1] + '\n' + 'Ano: ' + qual_alug[2] + '\n' + 'Placa: ' + qual_alug[3] + '\n' + 'Chassi: ' + qual_alug[4] + '\n' + 'Diaria: ' + str(qual_alug[5]) + '\n' + 'Multa: ' + str(qual_alug[6]) + '\n')
     print('Dias: ' + str(new[5]) + '| ' + 'Diaria resultante: R$ ' + str(new[3]))
-    conf = raw_input('CONFIRMACAO: Deseja realmente realizar esse aluguel?y ou n\n')
+    conf = raw_input('CONFIRMACAO: Deseja realmente realizar esse aluguel?y para continuar\n')
     if conf=='n':
         print('Operacao cancelada.\n')
         return
@@ -1142,7 +1153,7 @@ def fim_aluguel():
         print('Valor digitado nao aceito pelo sistema.')
         return
 
-    conf = raw_input('Tem certeza? y ou n\n')
+    conf = raw_input('Tem certeza? y para continuar\n')
 
     if conf!='y':
         print('Operacao cancelada.\n')
