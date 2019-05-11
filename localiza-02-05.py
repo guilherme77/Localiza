@@ -35,6 +35,10 @@ lst_hatch = []
 lst_alugados = []
 lst_estoque = [lst_suv, lst_sedan, lst_hatch]
 
+# Expressoes lambda
+
+dobro = lambda num:num*2
+
 # Funcoes e resto do codigo
 
 def main():
@@ -299,10 +303,10 @@ def verifica_perfil(username):
 
 def func_gerente(username):
     opcao_ger = 0
-    tp_libera = ('1','2','3','4', '5', '6', '7','8','9','10','11','12','13','14','15','16', '156')
+    tp_libera = ('1','2','3','4', '5', '6', '7','8','9','10','11','12','13','14','15','16','17','156')
     
     while(opcao_ger not in tp_libera):
-        opcao_ger = raw_input('Gerente logado, o que deseja?\n[1] Cadastrar alguem \n[2] Ativar cadastro\n[3] Buscar usuario\n[4] Verificar estoque\n[5] Deletar usuario\n[6] Buscar item\n[7] Atualizar usuario\n[8]Quantidade de usuarios cadastrados\n[9]Alterar perfil de usuario\n[10]Cadastrar item\n[11]Deletar item\n[12]Ver graficos\n[13]Dados do sistema\n[14]Verificar operacoes de um dado usuario\n[15]Contabilizar divida paga ao sistema\n[16]Limpar lista de perfis pendentes\n[156] Deslogar\n')
+        opcao_ger = raw_input('Gerente logado, o que deseja?\n[1] Cadastrar alguem \n[2] Ativar cadastro\n[3] Buscar usuario\n[4] Verificar estoque\n[5] Deletar usuario\n[6] Buscar item\n[7] Atualizar usuario\n[8]Quantidade de usuarios cadastrados\n[9]Alterar perfil de usuario\n[10]Cadastrar item\n[11]Deletar item\n[12]Ver graficos\n[13]Dados do sistema\n[14]Verificar operacoes de um dado usuario\n[15]Contabilizar divida paga ao sistema\n[16]Limpar lista de perfis pendentes\n[17]Ver dividas ativas no sistema\n[156] Deslogar\n')
     
     if opcao_ger=='1':
         log(username, 'Realizar cadastro')
@@ -352,6 +356,9 @@ def func_gerente(username):
     elif opcao_ger=='16':
         log(username, 'Limpar perfis pendentes')
         limpar_perfispendentes()
+    elif opcao_ger=='17':
+        log(username, 'Ver dividas ativas')
+        ver_dividas()
     
     if opcao_ger!='156':
         func_gerente(username)
@@ -362,10 +369,10 @@ def func_gerente(username):
 
 def func_funcionario(username):
     opcao_func = 0
-    tp_libera = ('1','2','3','4','5','6','7','156')
+    tp_libera = ('1','2','3','4','5','6','7','8','9','156')
     
     while(opcao_func not in tp_libera):
-        opcao_func = raw_input('Funcionario logado. O que deseja?\n[1]Verificar estoque\n[2]Cadastrar_item\n[3]Deletar item\n[4]Buscar usuario\n[5]Fazer cadastro\n[6]Atualizar usuario\n[7]Confirmar pagamento de divida\n[156]Deslogar\n')
+        opcao_func = raw_input('Funcionario logado. O que deseja?\n[1]Verificar estoque\n[2]Cadastrar_item\n[3]Deletar item\n[4]Buscar usuario\n[5]Fazer cadastro\n[6]Atualizar usuario\n[7]Confirmar pagamento de divida\n[8]Buscar item\n[9]Ver dividas ativas no sistema\n[156]Deslogar\n')
     
     if opcao_func=='1':
         log(username, 'Verificar estoque')
@@ -388,6 +395,12 @@ def func_funcionario(username):
     elif opcao_func=='7':
         log(username, 'Confirmar o pagamento de divida')
         fim_aluguel()
+    elif opcao_func=='8':
+        log(username, 'Buscar item')
+        buscar_item()
+    elif opcao_func=='9':
+        log(username, 'Ver dividas')
+        ver_dividas()
         
     if opcao_func!='156':
         func_funcionario(username)
@@ -1256,6 +1269,19 @@ def verif_cpf(dados):
         return 0
     
     return 1 
+
+def ver_dividas():
+    if len(lst_dividas)==0:
+        print('Nao ha dividas ativas no sistema!\n')
+        return
+    
+    for x in lst_dividas:
+        print('%%%%%%%%% PROXIMO %%%%%%%%%%')
+        for y in lst_clientes:
+            if int(x[0])==int(y[0]):
+                print('ID de usuario: ' + str(x[0]) + '\nNome de usuario: ' + str(y[1]) + '\nChassi do modelo alugado: ' + str(x[1]) + '\nData do aluguel: ' + str(x[2]) + '\nDias de aluguel: ' + str(x[5]) + '\nValor de diaria: R$ ' + str(x[3]) + '\nValor de multa: R$ ' + str(x[4]))
+    
+    return
           
 def armazena(info, x):
     if x==1:
@@ -1278,7 +1304,7 @@ def armazena(info, x):
     return
 
 def gera_id_user():
-    x = (len(lst_gerentes) + len(lst_funcionarios) + len(lst_clientes))*2
+    x = dobro((len(lst_gerentes) + len(lst_funcionarios) + len(lst_clientes)))
     while(1):
         id_user = rd.randint(2,x)
         if not id_user in lst_ids_ativos:
