@@ -49,6 +49,7 @@ def main():
     
     inicia_sistema()
 
+# funcao que define a continuidade do sistema ativo
 def inicia_sistema():
     x = 0
     while(tag):
@@ -59,6 +60,7 @@ def inicia_sistema():
             break
         x = x+1
 
+# inicia o sistema ao usuario
 def opcoes_iniciais(x):
     entrada_inicial = 0
     tp_entrada = ('1','2','3')
@@ -80,7 +82,8 @@ def opcoes_iniciais(x):
         
     return 
 
-def iniciar_banco_dados(): #essa funcao tambem devera atualizar estoques, situacao de alugueis e etc
+# pega os dados armazenados e torna as listas de dados funcionais
+def iniciar_banco_dados(): 
     # gerente
     arq = open('gerente_dados.txt', 'r')
     linha = arq.readlines()
@@ -101,8 +104,6 @@ def iniciar_banco_dados(): #essa funcao tambem devera atualizar estoques, situac
             lst_gerentes.append(lst_add)
             k=0
             lst_add = []
- 
-    #    print(lst_gerentes)
 
     arq.close()
     
@@ -128,8 +129,6 @@ def iniciar_banco_dados(): #essa funcao tambem devera atualizar estoques, situac
             k=0
             lst_add = []
  
-    #    print(lst_funcionarios)
-
     arq.close()
 
      # clientes
@@ -153,8 +152,6 @@ def iniciar_banco_dados(): #essa funcao tambem devera atualizar estoques, situac
             lst_clientes.append(lst_add)
             k=0
             lst_add = []
- 
-    #    print(lst_clientes)
 
     arq.close()
     
@@ -178,8 +175,6 @@ def iniciar_banco_dados(): #essa funcao tambem devera atualizar estoques, situac
             k=0
             lst_add = []
  
-    #    print(lst_dividas)
-
     arq.close()
     
     # itens alugados
@@ -201,8 +196,6 @@ def iniciar_banco_dados(): #essa funcao tambem devera atualizar estoques, situac
             lst_alugados.append(lst_add)
             k=0
             lst_add = []
- 
-    #    print(lst_dividas)
 
     arq.close()
     
@@ -232,8 +225,6 @@ def iniciar_banco_dados(): #essa funcao tambem devera atualizar estoques, situac
             k=0
             lst_add = []
  
-    #    print(lst_suv)
-
     arq.close()
     
     # perfis pendentes
@@ -260,6 +251,7 @@ def iniciar_banco_dados(): #essa funcao tambem devera atualizar estoques, situac
     
     return
 
+# login do usuario
 def fazer_login():
     tp_opcao = ('y','n')
     opcao = 'k'
@@ -279,6 +271,7 @@ def fazer_login():
             fazer_login()
     return   
 
+# verifica a existencia do login e se a senha eh correspondente
 def checa_login(username, password):
     
     for x in lst_usuarios:
@@ -288,7 +281,8 @@ def checa_login(username, password):
                     return 1
                 else:
                     return 2
-                
+
+# checa qual eh o perfil do user, para redirecionar para o menu especifico                
 def verifica_perfil(username):    
     for x in lst_usuarios:
         for y in x:
@@ -305,6 +299,7 @@ def verifica_perfil(username):
                     func_cliente(username)
                     return                
 
+# funcao gerente e suas opcoes de sistema
 def func_gerente(username):
     opcao_ger = 0
     tp_libera = ('1','2','3','4', '5', '6', '7','8','9','10','11','12','13','14','15','16','17','156')
@@ -371,6 +366,7 @@ def func_gerente(username):
     
     return
 
+# funcao funcionario e suas opcoes de sitema
 def func_funcionario(username):
     opcao_func = 0
     tp_libera = ('1','2','3','4','5','6','7','8','9','156')
@@ -413,6 +409,7 @@ def func_funcionario(username):
     
     return
 
+# funcao cliente e suas opcoes de sistema
 def func_cliente(username):
     opcao_cli = 0
     tp_libera = ('1','2','3')
@@ -436,6 +433,7 @@ def func_cliente(username):
     
     return
 
+# funcao para o gerente tornar um cadastrado ativo no perfil correspondente
 def ativar_cadastro():
     ativar_quem = 0
     qual_perfil = 0
@@ -456,7 +454,7 @@ def ativar_cadastro():
         
     conf = raw_input('Deseja realmente adicionar alguem ao sistema?y para continuar\n')
     
-    if conf=='n':
+    if conf!='y':
         print('Operacao cancelada.\n')
         return
     
@@ -464,7 +462,9 @@ def ativar_cadastro():
         ativar_quem = raw_input("Quem deseja adicionar? Cada opcao eh um inteiro que vai de 1 ate o maximo disponivel\n")
     
     while(qual_perfil not in tp_libera2):
-        print("\nVoce escolheu adicionar o usuario", lst_perfispendentes[(int(ativar_quem))-1])        
+        auxiliar = lst_perfispendentes(int(ativar_quem))-1
+        print("\nVoce escolheu adicionar o usuario: ")
+        print('Nome: ' + str(auxiliar[1]) + '\nCPF: ' + str(auxiliar[2]))        
         qual_perfil = raw_input("A qual perfil ele pertence?\n[1]Gerente \n[2]Funcionario \n[3]Cliente\n")
         
     if qual_perfil=='1':
@@ -486,11 +486,11 @@ def ativar_cadastro():
 
             lst_perfispendentes.remove(x)  
                       
-    #print('olha os pendentes', lst_perfispendentes)
     print("\nSistema atualizado!\n")
         
     return
 
+# realiza o cadastro do usuario, mas fica pendente de aprovacao do gerente
 def realizar_cadastro():
     lst_perguntas = ['ID','\nNome: ', '\nCPF, sem espacos, tracos ou pontos, 11 dig: ','\nData de nascimento: sequencia oito digitos numericos sem espacos entre si - diamesano: ', 'idade', '\nLogin desejado: ', '\nSenha escolhida: ']
     lst_dados = []
@@ -502,6 +502,9 @@ def realizar_cadastro():
             entrada_dados = gera_id_user()
         elif x==4:
             entrada_dados = gera_idade(lst_dados[3])
+            if int(entrada_dados)<18:
+                print('Voce eh menor de idade; cadastro invalido!\n')
+                return
         else:
             if x==3:
                 ok = 0
@@ -527,10 +530,9 @@ def realizar_cadastro():
     print('Fim do cadastro!\n')
     armazena(lst_dados, 1)
     
-#    print(lst_dados)
-    
     return
 
+# busca um usuario desejado no sistema, mas com restricoes de informacao dependendo de quem esta logado
 def buscar_usuario(username):
     for x in lst_usuarios:
         for y in x:
@@ -565,6 +567,7 @@ def buscar_usuario(username):
     
     return
 
+# exibe os dados de estoque
 def verificar_estoque():
     print("\nEstoque atualizado: ")
     print("\n\tModelos SUV [ID 001]: " + str(len(lst_suv)) + " em estoque")
@@ -586,6 +589,7 @@ def verificar_estoque():
         
     return
 
+# apaga um usuario do sistema, caso nao exista pendencias ativas
 def deletar_usuario(username):
     for x in lst_usuarios:
         for y in x:
@@ -636,6 +640,7 @@ def deletar_usuario(username):
     
     return                                  
 
+# busca um veiculo da loja e informa sua situacao
 def buscar_item():
     chassis_cadastrados()
     
@@ -653,7 +658,7 @@ def buscar_item():
     for x in lst_dividas:
         if x[1]==iden:
             print('Modelo encontrado, atualmente encontra-se alugado.\n')
-            for y in lst_alugados: # alterar quando criar lista e funcao de aluugados
+            for y in lst_alugados:
                 if iden==y[4]:
                     print('Nome: ' + y[0] + '\n' + 'ID do modelo: ' + y[1] + '\n' + 'Ano: ' + y[2] + '\n' + 'Placa: ' + y[3] + '\n' + 'Chaci: ' + y[4] + '\n' + 'Diaria: ' + str(y[5]) + '\n' + 'Multa: ' + str(y[6]) + '\n')
                     print('ID de usuario que alugou: ' + str(x[0]) + '\n' + 'Data do aluguel | MMDDAAAA: ' + str(x[2]) + '\n' + 'Diaria de contrato: ' + str(x[3]) + '\n' + 'Dias de contrato: ' + str(x[5]) + '\nDivida em aberto (multa): ' + str(x[4]) + ' reais\n')
@@ -663,6 +668,7 @@ def buscar_item():
     
     return
 
+# informa os numeros de chassi disponiveis para busca
 def chassis_cadastrados():
     chassis_num = []
     
@@ -679,6 +685,7 @@ def chassis_cadastrados():
         
     return
 
+# atualiza o cadastro de um determinado usuario, mas com restricos do funcionario para o gerente
 def att_usuario(username):  
     print('Logins dos usuarios cadastrados no sistema: \n')
     dados_novos = []
@@ -719,6 +726,9 @@ def att_usuario(username):
         ok = verif_data(att_datanasc)
     dados_novos.append(att_datanasc)
     att_idade = gera_idade(att_datanasc)
+    if int(att_idade)<18:
+        print('A data desejada pertenceria a um menor de idade; operacao cancelada!\n')
+        return
     dados_novos.append(att_idade)
     ok = 0
     while ok==0:
@@ -729,7 +739,6 @@ def att_usuario(username):
     dados_novos.append(att_senha)
     
     aux = []
-    
     
     for x in lst_usuarios:
         for y in x:
@@ -750,6 +759,7 @@ def att_usuario(username):
         
     return
 
+# verifica a data de nascimento e possiveis restricoes
 def verif_data(dados):
     try:
         int(dados)
@@ -762,21 +772,27 @@ def verif_data(dados):
         return 0
     
     ano = int(dados[4:])
+    mes = int(dados[2:4])
+    dia = int(dados[:2])
     
     if ano>datetime.now().year:
         print('Voce nao nasceu no futuro.\n')
         return 0
+    elif ano==datetime.now().year:
+        if mes>datetime.now().month:
+            print('Voce nao nasceu no futuro.\n')
+            return 0
+        elif mes==datetime.now().month:
+            if dia>datetime.now().day:
+                print('Voce nao nasceu no futuro.\n')
+                return 0    
     elif ano<1900:
         print('Voce nao pode ser tao velho.\n')
-        return 0
-    
-    mes = int(dados[2:4]) 
+        return 0 
     
     if mes<1 or mes>12:
         print('Esse mes nao existe.\n')
         return 0        
-    
-    dia = int(dados[:2])
     
     if mes==2:
         if dia<0 or dia>29:
@@ -792,7 +808,8 @@ def verif_data(dados):
             return 0
         
     return 1
-                     
+
+# informa a quantidade de usuarios por categoria (perfil)                     
 def quant_usuarios():
     quant = 0
     for x in lst_usuarios:
@@ -807,6 +824,7 @@ def quant_usuarios():
     
     return
 
+# muda o perfil de um determinado usuario; somente o gerente pode faze-lo
 def alterar_perfil(username):
     for x in lst_usuarios:
         for y in x:
@@ -885,6 +903,11 @@ def cadastrar_item():
     multa_car = raw_input('Valor da multa diaria: ')
     novo_item.append(int(multa_car))
     
+    conf = raw_input('Tem certeza das informacoes passadas anteriormente e deseja realmente cadastrar o veiculo? y para continuar\n')
+    if conf!='y':
+        print('Cadastro de item cancelado!\n')
+        return
+    
     if novo_item[1]=='001':
         lst_suv.append(novo_item)
     elif novo_item[1]=='002':
@@ -898,6 +921,7 @@ def cadastrar_item():
     
     return
 
+# apaga um item estocado do sistema
 def deletar_item():
     verificar_estoque()
     
@@ -908,7 +932,7 @@ def deletar_item():
             if y[4]==chassi_car:
                 print('Nome: ' + y[0] + '\n' + 'ID do modelo: ' + y[1] + '\n' + 'Ano: ' + y[2] + '\n' + 'Placa: ' + y[3] + '\n' + 'Chaci: ' + y[4] + '\n' + 'Diaria: ' + str(y[5]) + '\n' + 'Multa: ' + str(y[6]) + '\n')
                 conf = raw_input('Modelo encontrado, deseja realmente apaga-lo do estoque?y para continuar\n')
-                if conf=='y':
+                if conf!='y':
                     print('Operacao cancelada.\n')
                     return
                 delet = y
@@ -925,6 +949,7 @@ def deletar_item():
     
     return
 
+# funcao para o usuario realizar aluguel
 def alugar_carro(username):
     print('ALUGUEL - para cada veiculo alugado, um novo processo de aluguel devera ser feito. Aluguel de no maximo 30 dias.\n')
     opcoes = []
@@ -989,7 +1014,7 @@ def alugar_carro(username):
     print('Nome: ' + qual_alug[0] + '\n' + 'ID do modelo: ' + qual_alug[1] + '\n' + 'Ano: ' + qual_alug[2] + '\n' + 'Placa: ' + qual_alug[3] + '\n' + 'Chassi: ' + qual_alug[4] + '\n' + 'Diaria: ' + str(qual_alug[5]) + '\n' + 'Multa: ' + str(qual_alug[6]) + '\n')
     print('Dias: ' + str(new[5]) + '| ' + 'Diaria resultante: R$ ' + str(new[3]))
     conf = raw_input('CONFIRMACAO: Deseja realmente realizar esse aluguel?y para continuar\n')
-    if conf=='n':
+    if conf!='y':
         print('Operacao cancelada.\n')
         return
     lst_alugados.append(qual_alug)
@@ -1021,6 +1046,7 @@ def alugar_carro(username):
         
 #    return valor
 
+# mostra ao user sua situacao atual com a empresa
 def verifica_status(username):
     aux = []
     id_user = 0
@@ -1033,18 +1059,19 @@ def verifica_status(username):
     for x in lst_dividas:
         if x[0]==id_user:
             aux.append(x)
+
+    if len(aux)==0:
+        print('Voce nao tem dividas ativas.\n')
             
     print('Suas dividas atuais com a empresa sao: \n')
     
     for x in aux:
         print('Chassi do modelo: ' + x[1] + '\n' + 'Data do aluguel (DDMMAAAA): ' + str(x[2]) + '\n' + 'Diaria de contrato: R$ ' + str(x[3]) + '\n' + 'Multa em aberto: R$ ' + str(x[4]) + '\n' + 'Dias validos do aluguel: ' + str(x[5]))
         print('%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%')
-        
-    if len(aux)==0:
-        print('Voce nao tem dividas ativas.\n')
     
     return
 
+# apaga totalmente os perfis pendentes de cadastro
 def limpar_perfispendentes():
     
     if len(lst_perfispendentes)==0:
@@ -1069,6 +1096,7 @@ def limpar_perfispendentes():
     
     return
 
+# relatorio gerencial com algumas informacoes
 def relatorio():
     arq = open('historicotransacoes_dados.txt', 'r')
     linha = arq.readlines()
@@ -1095,13 +1123,11 @@ def relatorio():
         if len(aux)==6:
             data = aux[2]
             for y in range(0,len(anos)):
-                #print(int(data[-5:]),anos[y])
                 if int(data[-5:])==anos[y]:
                     infos_anuais[y].append(aux)
             aux = []
     arq.close()
-    #print infos_anuais
-    #return
+    
     count = 0
     for x in infos_anuais:
         meses = [[],[],[],[],[],[],[],[],[],[],[],[]]
@@ -1117,6 +1143,7 @@ def relatorio():
 
     return
 
+# alguns graficos para o relatorio gerencial
 def graficos():
     ano = datetime.now().year
     arq = open('historicotransacoes_dados.txt', 'r')
@@ -1191,6 +1218,7 @@ def graficos():
     
     return
 
+# evita nomes de user repetidos
 def login_existe(username):
     for x in lst_usuarios:
         for y in x:
@@ -1205,6 +1233,7 @@ def login_existe(username):
     
     return 1
 
+# mostra o historico de um cliente escolhido (que esteja ativo) para ger/func
 def ver_operacoes(username):
     for x in lst_usuarios:
         for y in x:
@@ -1243,6 +1272,7 @@ def ver_operacoes(username):
         
     return
  
+# finaliza o aluguel, eliminando diarias e possiveis multas    
 def fim_aluguel():
     i = 1
     
@@ -1299,7 +1329,8 @@ def fim_aluguel():
     print('Divida paga. Sistema atualizado!')
     
     return
- 
+
+# mantem o sistema com as dividas atualizadas conforme a data 
 def gera_multa():
     aux = 0
     aux2 = []
@@ -1309,16 +1340,12 @@ def gera_multa():
     for x in lst_dividas:
         aux2 = x
         data = str(x[2])
-        #print('data', data)
         aux = int(data[-4:])
         d_aux1 = str(aux)+'-'+str(data[-6:-4])+'-'+str(data[:-6])
-        #print('daux_1', d_aux1)
         d_aux2 = str(datetime.now().year)+'-'+str(datetime.now().month)+'-'+str(datetime.now().day)
-        #print('daux_2', d_aux2)
         d1 = datetime.strptime(d_aux1, '%Y-%m-%d')
         d2 = datetime.strptime(d_aux2, '%Y-%m-%d')
         tempo_atraso = abs((d2 - d1).days)
-        #print('tempoatraso', tempo_atraso)
 
         if tempo_atraso>x[5]:
             for y in lst_alugados:
@@ -1331,6 +1358,7 @@ def gera_multa():
             
     return
 
+# verifica algumas restricoes de cpf (sem validacao oficial)
 def verif_cpf(dados):
     if len(dados)!=11:
         print('CPF no formato errado!\n')
@@ -1344,6 +1372,7 @@ def verif_cpf(dados):
     
     return 1 
 
+# ver todas as dividas ativas do sistema
 def ver_dividas():
     if len(lst_dividas)==0:
         print('Nao ha dividas ativas no sistema!\n')
@@ -1356,20 +1385,17 @@ def ver_dividas():
                 print('ID de usuario: ' + str(x[0]) + '\nNome de usuario: ' + str(y[1]) + '\nChassi do modelo alugado: ' + str(x[1]) + '\nData do aluguel: ' + str(x[2]) + '\nDias de aluguel: ' + str(x[5]) + '\nValor de diaria: R$ ' + str(x[3]) + '\nValor de multa: R$ ' + str(x[4]))
     
     return
-          
+
+# uma funcao que redireciona alguns armazenamentos para listas especificas          
 def armazena(info, x):
     if x==1:
         lst_perfispendentes.append(info)
-        print(lst_perfispendentes)
     elif x==2:
         lst_gerentes.append(info)
-        print('\n', lst_gerentes)
     elif x==3:
         lst_funcionarios.append(info)
-        print('\n', lst_funcionarios)
     elif x==4:
         lst_clientes.append(info)
-        print('\n', lst_clientes)
     elif x==5:
         lst_dividas.append(info)
     
@@ -1377,6 +1403,7 @@ def armazena(info, x):
         
     return
 
+# gera um id nao repetido de usuario
 def gera_id_user():
     x = dobro((len(lst_gerentes) + len(lst_funcionarios) + len(lst_clientes)))
     while(1):
@@ -1388,15 +1415,12 @@ def gera_id_user():
 
     return id_user
 
+# retorna a idade a partir da data de nascimento informada em cadastro
 def gera_idade(data_nasc):
     
     dia_nasc = int(data_nasc[0:2])
     mes_nasc = int(data_nasc[2:4])
     ano_nasc = int(data_nasc[4::])
-#    print('dia', dia_nasc)
-#    print('mes', mes_nasc)
-#    print('ano', ano_nasc)
-    
 
     idade = datetime.now().year - ano_nasc
     if datetime.now().month < mes_nasc:
@@ -1407,6 +1431,7 @@ def gera_idade(data_nasc):
                 
     return idade
 
+# exibe uma tabela de infos do sistema - com restricoes para o tipo de usuario
 def exibe(perfil):
     dict_sistema = {}
     lst_exibe = []
@@ -1419,10 +1444,7 @@ def exibe(perfil):
             for x in lst_usuarios:       
                 for y in x:
                     lst_exibe.append(y[k])
-                    #print lst_exibe
-                
                     dict_sistema[lst_infos_tab[k]] = lst_exibe
-                    #print lst_infos_tab[k]
     
             if k==len(lst_infos_tab)-1:
                 tag = False
@@ -1434,10 +1456,7 @@ def exibe(perfil):
                 for y in x:
                     if k!=6:
                         lst_exibe.append(y[k])
-                        #print lst_exibe
-                
                         dict_sistema[lst_infos_tab[k]] = lst_exibe
-                        #print lst_infos_tab[k]
                     elif k==6:
                         lst_exibe.append('----')
                         dict_sistema[lst_infos_tab[k]] = lst_exibe
@@ -1451,6 +1470,7 @@ def exibe(perfil):
     frame = pd.DataFrame(dict_sistema)
     print frame  
 
+# atualiza os arquivos de texto com as infos do sistema
 def atualizar_banco():
     
     # gerente
@@ -1524,6 +1544,7 @@ def atualizar_banco():
     
     return
 
+# historico de acesso
 def log(username, str_acao):
     arq = open('log_localiza.txt', 'a')
     
