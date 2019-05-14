@@ -29,7 +29,7 @@ lst_funcionarios = []
 lst_gerentes = []
 lst_usuarios = [lst_gerentes ,lst_clientes, lst_funcionarios]
 lst_dividas = [] # cada item sera uma sublista com indices ID, ID do modelo alugado, data de aluguel, diaria em divida, possiveis multas
-lst_suv = [] # formato nome,id_tipo, ano, placa, chaci, diaria, multa do modelo
+lst_suv = [] # formato nome,id_tipo, ano, placa, chassi, diaria, multa do modelo
 lst_sedan = []
 lst_hatch = []
 lst_picape = []
@@ -166,6 +166,8 @@ def iniciar_banco_dados():
         if k==1:
             new = x.replace(x, x[:-1])
             lst_add.append(new)
+        elif k==3 or k==4:
+            lst_add.append(float(x))
         else:
             lst_add.append((int(x)))
 
@@ -186,7 +188,7 @@ def iniciar_banco_dados():
 
     for x in linha:
         if k==5 or k==6:
-            lst_add.append((int(x)))
+            lst_add.append((float(x)))
         else:
             new = x.replace(x, x[:-1])
             lst_add.append(new)
@@ -208,7 +210,7 @@ def iniciar_banco_dados():
 
     for x in linha:
         if k==5 or k==6:
-            lst_add.append((int(x)))
+            lst_add.append((float(x)))
         else:
             new = x.replace(x, x[:-1])
             lst_add.append(new)
@@ -288,6 +290,7 @@ def verifica_perfil(username):
         for y in x:
             if y[5]==username:
                 gera_multa()
+                atualizar_banco()
                 log(username, 'Login iniciado')
                 if y[7]=='gerente':                   
                     func_gerente(username)
@@ -302,10 +305,10 @@ def verifica_perfil(username):
 # funcao gerente e suas opcoes de sistema
 def func_gerente(username):
     opcao_ger = 0
-    tp_libera = ('1','2','3','4', '5', '6', '7','8','9','10','11','12','13','14','15','16','17','156')
+    tp_libera = ('1','2','3','4', '5', '6', '7','8','9','10','11','12','13','14','15','16','17','18','156')
     
     while(opcao_ger not in tp_libera):
-        opcao_ger = raw_input('Gerente logado, o que deseja?\n[1] Cadastrar alguem \n[2] Ativar cadastro\n[3] Buscar usuario\n[4] Verificar estoque\n[5] Deletar usuario\n[6] Buscar item\n[7] Atualizar usuario\n[8]Quantidade de usuarios cadastrados\n[9]Alterar perfil de usuario\n[10]Cadastrar item\n[11]Deletar item\n[12]Ver relatorio\n[13]Dados do sistema\n[14]Verificar operacoes de um dado usuario\n[15]Contabilizar divida paga ao sistema\n[16]Limpar lista de perfis pendentes\n[17]Ver dividas ativas no sistema\n[156] Deslogar\n')
+        opcao_ger = raw_input('Gerente logado, o que deseja?\n[1] Cadastrar alguem \n[2] Ativar cadastro\n[3] Buscar usuario\n[4] Verificar estoque\n[5] Deletar usuario\n[6] Buscar item\n[7] Atualizar usuario\n[8]Quantidade de usuarios cadastrados\n[9]Alterar perfil de usuario\n[10]Cadastrar item\n[11]Deletar item\n[12]Ver relatorio\n[13]Dados do sistema\n[14]Verificar operacoes de um dado usuario\n[15]Contabilizar divida paga ao sistema\n[16]Limpar lista de perfis pendentes\n[17]Ver dividas ativas no sistema\n[18]Atualizar item\n[156] Deslogar\n')
     
     if opcao_ger=='1':
         log(username, 'Realizar cadastro')
@@ -358,6 +361,11 @@ def func_gerente(username):
     elif opcao_ger=='17':
         log(username, 'Ver dividas ativas')
         ver_dividas()
+    elif opcao_ger=='18':
+        log(username, 'Atualizar item')
+        att_item()
+    
+    atualizar_banco()
     
     if opcao_ger!='156':
         func_gerente(username)
@@ -369,10 +377,10 @@ def func_gerente(username):
 # funcao funcionario e suas opcoes de sitema
 def func_funcionario(username):
     opcao_func = 0
-    tp_libera = ('1','2','3','4','5','6','7','8','9','156')
+    tp_libera = ('1','2','3','4','5','6','7','8','9','10','156')
     
     while(opcao_func not in tp_libera):
-        opcao_func = raw_input('Funcionario logado. O que deseja?\n[1]Verificar estoque\n[2]Cadastrar_item\n[3]Deletar item\n[4]Buscar usuario\n[5]Fazer cadastro\n[6]Atualizar usuario\n[7]Confirmar pagamento de divida\n[8]Buscar item\n[9]Ver dividas ativas no sistema\n[156]Deslogar\n')
+        opcao_func = raw_input('Funcionario logado. O que deseja?\n[1]Verificar estoque\n[2]Cadastrar_item\n[3]Deletar item\n[4]Buscar usuario\n[5]Fazer cadastro\n[6]Atualizar usuario\n[7]Confirmar pagamento de divida\n[8]Buscar item\n[9]Ver dividas ativas no sistema\n[10]Atualizar item\n[156]Deslogar\n')
     
     if opcao_func=='1':
         log(username, 'Verificar estoque')
@@ -401,6 +409,11 @@ def func_funcionario(username):
     elif opcao_func=='9':
         log(username, 'Ver dividas')
         ver_dividas()
+    elif opcao_func=='10':
+        log(username, 'Atualziar item')
+        att_item()
+    
+    atualizar_banco()    
         
     if opcao_func!='156':
         func_funcionario(username)
@@ -423,6 +436,8 @@ def func_cliente(username):
     elif opcao_cli=='2':
         log(username, 'Verificar status')
         verifica_status(username)
+    
+    atualizar_banco()
     
     if opcao_cli!='3':
         func_cliente(username)
@@ -458,11 +473,15 @@ def ativar_cadastro():
         print('Operacao cancelada.\n')
         return
     
-    while((int(ativar_quem)) not in tp_libera):
-        ativar_quem = raw_input("Quem deseja adicionar? Cada opcao eh um inteiro que vai de 1 ate o maximo disponivel\n")
+    try:
+        while((int(ativar_quem)) not in tp_libera):
+            ativar_quem = raw_input("Quem deseja adicionar? Cada opcao eh um inteiro que vai de 1 ate o maximo disponivel\n")
+    except ValueError:
+        print('Voce nao digitou um inteiro ... cancelando!\n')
+        return
     
     while(qual_perfil not in tp_libera2):
-        auxiliar = lst_perfispendentes(int(ativar_quem))-1
+        auxiliar = lst_perfispendentes[(int(ativar_quem))-1]
         print("\nVoce escolheu adicionar o usuario: ")
         print('Nome: ' + str(auxiliar[1]) + '\nCPF: ' + str(auxiliar[2]))        
         qual_perfil = raw_input("A qual perfil ele pertence?\n[1]Gerente \n[2]Funcionario \n[3]Cliente\n")
@@ -557,7 +576,7 @@ def buscar_usuario(username):
                 for z in lst_dividas:
                     if (int(id_user) == z[0]):
                         print('\nO usuario possui dividas com a empresa: ')
-                        print('Usuario: ID ' + str(z[0]) + '\nNumero de chassi do carro: ' + z[1] + '\nDiarias R$: ' +  str(z[3]) + '\nMultas: R$ ' + str(z[4]))
+                        print('Usuario: ID ' + str(z[0]) + '\nNumero de chai do carro: ' + z[1] + '\nDiarias R$: ' +  str(z[3]) + '\nMultas: R$ ' + str(z[4]))
                         div = div + 1
     if div==0:
         print("\nO usuario nao possui dividas com a empresa.\n")
@@ -598,15 +617,27 @@ def deletar_usuario(username):
    
     quem_del = '0'
     
-    while((int(quem_del)) not in lst_ids_ativos):
-        quem_del = raw_input('\nDigite o id do usuario que deseja apagar do sistema: ')
-        
+    try:
+        while((int(quem_del)) not in lst_ids_ativos):
+            quem_del = raw_input('\nDigite o id do usuario que deseja apagar do sistema: ')
+    except ValueError:
+        print('Voce nao digitou um inteiro! Cancelada a operacao.\n')
+        return
+    ok = 0    
     for x in lst_dividas:
         if x[0]==(int(quem_del)):
             print('O usuario escolhido possui dividas com a empresa. Nao eh possivel apaga-lo\n')
             print('ID do usuario: ' + str(x[0]) + '\n' + 'Numero de chassi do modelo alugado: ' + str(x[1]) + '\n' + 'Data do aluguel (DDMMAAAA): ' + str(x[2]) + '\n' + 'Dias de aluguel: ' + str(x[5]) + '\n' + 'Valor do aluguel: R$ ' + str(x[3]) + '\n' + 'Multa (se existente): R$ ' + str(x[4]))
-            return         
-            
+            ok=1
+    
+    if ok==1:
+        return
+    
+    conf = raw_input('Tem certeza?y para continuar\n')
+    if conf!='y':
+        print('Operacao cancelada!\n')
+        return
+        
     print('Usuario encontrado. Nao possui dividas pendentes. Apagando ...\n')
     
     arq = open('historicotransacoes_dados.txt', 'r')
@@ -642,6 +673,10 @@ def deletar_usuario(username):
 
 # busca um veiculo da loja e informa sua situacao
 def buscar_item():
+    if (len(lst_suv) + len(lst_sedan) + len(lst_hatch) + len(lst_picape))==0:
+        if len(lst_alugados)==0:
+            print('Nao ha itens a serem buscados. Cadastre alguma coisa antes!\n')
+            return
     chassis_cadastrados()
     
     iden = '0'
@@ -652,7 +687,7 @@ def buscar_item():
         for y in x:
             if iden==y[4]:
                 print('Modelo encontrado, atualmente no estoque.\n')
-                print('Nome: ' + x[0] + '\n' + 'ID do modelo: ' + x[1] + '\n' + 'Ano: ' + x[2] + '\n' + 'Placa: ' + x[3] + '\n' + 'Chaci: ' + x[4] + '\n' + 'Diaria: ' + str(x[5]) + '\n' + 'Multa: ' + str(x[6]) + '\n')
+                print('Nome: ' + x[0] + '\n' + 'ID do modelo: ' + x[1] + '\n' + 'Ano: ' + x[2] + '\n' + 'Placa: ' + x[3] + '\n' + 'Chassi: ' + x[4] + '\n' + 'Diaria: ' + str(x[5]) + '\n' + 'Multa: ' + str(x[6]) + '\n')
                 return
     
     for x in lst_dividas:
@@ -660,7 +695,7 @@ def buscar_item():
             print('Modelo encontrado, atualmente encontra-se alugado.\n')
             for y in lst_alugados:
                 if iden==y[4]:
-                    print('Nome: ' + y[0] + '\n' + 'ID do modelo: ' + y[1] + '\n' + 'Ano: ' + y[2] + '\n' + 'Placa: ' + y[3] + '\n' + 'Chaci: ' + y[4] + '\n' + 'Diaria: ' + str(y[5]) + '\n' + 'Multa: ' + str(y[6]) + '\n')
+                    print('Nome: ' + y[0] + '\n' + 'ID do modelo: ' + y[1] + '\n' + 'Ano: ' + y[2] + '\n' + 'Placa: ' + y[3] + '\n' + 'Chassi: ' + y[4] + '\n' + 'Diaria: ' + str(y[5]) + '\n' + 'Multa: ' + str(y[6]) + '\n')
                     print('ID de usuario que alugou: ' + str(x[0]) + '\n' + 'Data do aluguel | MMDDAAAA: ' + str(x[2]) + '\n' + 'Diaria de contrato: ' + str(x[3]) + '\n' + 'Dias de contrato: ' + str(x[5]) + '\nDivida em aberto (multa): ' + str(x[4]) + ' reais\n')
                     return
     
@@ -671,10 +706,12 @@ def buscar_item():
 # informa os numeros de chassi disponiveis para busca
 def chassis_cadastrados():
     chassis_num = []
-    
+    #if (len(lst_suv)+len(lst_sedan)+len(lst_hatch)+len(lst_picape))==0:
+    #    if len(lst_alugados)==0:
+    #        return
     for x in lst_estoque:
         for y in x:
-            chassis_num.append(x[4])
+            chassis_num.append(y[4])
             
     for x in lst_dividas:
         chassis_num.append(x[1])
@@ -695,7 +732,12 @@ def att_usuario(username):
                 perfil = y[7]
                 exibe(perfil)
     
-    quem_att = raw_input('\nDigite o id de quem deseja atualizar: ')
+    try:
+        quem_att = raw_input('\nDigite o id de quem deseja atualizar: ')
+        int(quem_att)
+    except ValueError:
+        print('ID invalido!\n')
+        return
     
     if perfil=='funcionario':
         for x in lst_gerentes:
@@ -834,7 +876,12 @@ def alterar_perfil(username):
     tp_perfil = ('gerente', 'funcionario', 'cliente')
     novo_perfil = 'aleat'
     
-    quem_alterar = raw_input('\nDigite o ID de quem deseja alterar o perfil: ')
+    try:
+        quem_alterar = raw_input('\nDigite o ID de quem deseja alterar o perfil: ')
+        int(quem_alterar)
+    except ValueError:
+        print('ID invalido!\n')
+        return
         
     if (int(quem_alterar)) not in lst_ids_ativos:
         print('Usuario nao encontrado.\n')
@@ -859,7 +906,7 @@ def alterar_perfil(username):
         i = i+1
     
     while(novo_perfil not in tp_perfil):
-        novo_perfil = raw_input('Digite o novo perfil para o seu usuario: ')
+        novo_perfil = raw_input("Digite o novo perfil para o seu usuario | 'gerente', 'cliente' ou 'funcionario' : \n")
     
     aux[7] = novo_perfil
         
@@ -895,13 +942,25 @@ def cadastrar_item():
     novo_item.append(ano_car)
     placa_car = raw_input('Placa do carro: ')
     novo_item.append(placa_car)
-    while(len(chassi_car)!=17):
+    ok = 0
+    while(ok==0):
         chassi_car = raw_input('Numero de chassi(17 digitos): ')
+        ok = verif_chassi(chassi_car)
     novo_item.append(chassi_car)
-    diaria_car = raw_input('Valor da diaria do carro: ')
-    novo_item.append(int(diaria_car))
-    multa_car = raw_input('Valor da multa diaria: ')
-    novo_item.append(int(multa_car))
+    try:
+        diaria_car = raw_input('Valor da diaria do carro: ')
+        float(diaria_car)
+    except ValueError:
+        print('Valor invalido!\n')
+        return
+    novo_item.append(float(diaria_car))
+    try:
+        multa_car = raw_input('Valor da multa diaria: ')
+        float(multa_car)
+    except ValueError:
+        print('Valor invalido!\n')
+        return
+    novo_item.append(float(multa_car))
     
     conf = raw_input('Tem certeza das informacoes passadas anteriormente e deseja realmente cadastrar o veiculo? y para continuar\n')
     if conf!='y':
@@ -923,6 +982,10 @@ def cadastrar_item():
 
 # apaga um item estocado do sistema
 def deletar_item():
+    if (len(lst_suv) + len(lst_sedan) + len(lst_hatch) + len(lst_picape))==0:
+        if len(lst_alugados)==0:
+            print('Nao ha itens para deletar!\n')
+            return
     verificar_estoque()
     
     chassi_car = raw_input('Digite o numero de chassi que deseja apagar: ')
@@ -930,7 +993,7 @@ def deletar_item():
     for x in lst_estoque:
         for y in x: 
             if y[4]==chassi_car:
-                print('Nome: ' + y[0] + '\n' + 'ID do modelo: ' + y[1] + '\n' + 'Ano: ' + y[2] + '\n' + 'Placa: ' + y[3] + '\n' + 'Chaci: ' + y[4] + '\n' + 'Diaria: ' + str(y[5]) + '\n' + 'Multa: ' + str(y[6]) + '\n')
+                print('Nome: ' + y[0] + '\n' + 'ID do modelo: ' + y[1] + '\n' + 'Ano: ' + y[2] + '\n' + 'Placa: ' + y[3] + '\n' + 'Chassi: ' + y[4] + '\n' + 'Diaria: ' + str(y[5]) + '\n' + 'Multa: ' + str(y[6]) + '\n')
                 conf = raw_input('Modelo encontrado, deseja realmente apaga-lo do estoque?y para continuar\n')
                 if conf!='y':
                     print('Operacao cancelada.\n')
@@ -970,7 +1033,7 @@ def alugar_carro(username):
     for x in lst_dividas:
         if x[0]==id_user:
             if x[4]!=0:
-                print('Voce esta com R$ %d de divida (multa) com a empresa; impossivel realizar novo aluguel\n')
+                print('Voce esta com R$ %f de divida (multa) com a empresa; impossivel realizar novo aluguel\nVerifique seu status no menu de cliente.\n' %(x[4]))
                 return
             
     print("ID's: 001 - SUV, 002-SEDAN, 003 - HATCH, 004 - PICAPE\n")        
@@ -978,7 +1041,7 @@ def alugar_carro(username):
     for x in lst_estoque:
         for y in x:
             print('> OPCAO %d' %(i))
-            print('Nome: ' + y[0] + '\n' + 'ID do modelo: ' + y[1] + '\n' + 'Ano: ' + y[2] + '\n' + 'Placa: ' + y[3] + '\n' + 'Chaci: ' + y[4] + '\n' + 'Diaria: ' + str(y[5]) + '\n' + 'Multa: ' + str(y[6]) + '\n')
+            print('Nome: ' + y[0] + '\n' + 'ID do modelo: ' + y[1] + '\n' + 'Ano: ' + y[2] + '\n' + 'Placa: ' + y[3] + '\n' + 'Chassi: ' + y[4] + '\n' + 'Diaria: ' + str(y[5]) + '\n' + 'Multa: ' + str(y[6]) + '\n')
             i = i+1
             opcoes.append(y)
     print('%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%')
@@ -987,8 +1050,11 @@ def alugar_carro(username):
     
     while(tag):
         qual_alug = raw_input('Digite o inteiro correspondente a opcao do modelo que deseja alugar: ')
-        if ((int(qual_alug))>0) and ((int(qual_alug)) <= len(opcoes)):
-            tag = False
+        try:
+            if ((int(qual_alug))>0) and ((int(qual_alug)) <= len(opcoes)):
+                tag = False
+        except ValueError:
+            print('DIGITE NUMEROS!!!!!!!\n')
             
     i = (int(qual_alug))
     qual_alug = opcoes[i-1]
@@ -996,8 +1062,11 @@ def alugar_carro(username):
     tag = True
     while(tag):    
         num_dias = raw_input('Digite a quantidade de dias que deseja estar em posse do modelo | maximo 30: ')
-        if (int(num_dias) > 0) and (int(num_dias)<31):
-            tag = False
+        try:
+            if (int(num_dias) > 0) and (int(num_dias)<31):
+                tag = False
+        except ValueError:
+            print('DIGITE NUMEROS!!!!!\n')
         
     divida = gera_divida(qual_alug[5],int(num_dias))
     
@@ -1062,6 +1131,7 @@ def verifica_status(username):
 
     if len(aux)==0:
         print('Voce nao tem dividas ativas.\n')
+        return
             
     print('Suas dividas atuais com a empresa sao: \n')
     
@@ -1240,7 +1310,12 @@ def ver_operacoes(username):
             if y[5]==username:
                 exibe(y[7])
     
-    id_user = raw_input('Digite o ID do usuario pelo qual deseja buscar operacoes: ')
+    try:
+        id_user = raw_input('Digite o ID do usuario pelo qual deseja buscar operacoes: ')
+        int(id_user)
+    except ValueError:
+        print('DIGITE NUMEROS!Cancelando\n')
+        return
     
     if (int(id_user)) not in lst_ids_ativos:
         print('O usuario nao esta ativo ou nao consta ou nunca realizou operacoes no sistema.')
@@ -1299,8 +1374,13 @@ def fim_aluguel():
         print('Dias de aluguel: ' + str(x[5]))
         i = i+1
         print('%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%')
-      
-    qual_div = raw_input('Qual divida deseja constar como paga? Digite o inteiro referente a ela: ')
+    
+    try:  
+        qual_div = raw_input('Qual divida deseja constar como paga? Digite o inteiro referente a ela: ')
+        int(qual_div)
+    except ValueError:
+        print('DIGITE NUMEROS!!!Operacao cancelada\n')
+        return
 
     if (int(qual_div))>(len(lst_dividas)) or (int(qual_div))<1:
         print('Valor digitado nao aceito pelo sistema.')
@@ -1322,6 +1402,8 @@ def fim_aluguel():
                 lst_sedan.append(x)
             elif x[1]=='003':
                 lst_hatch.append(x)
+            elif x[1]=='004':
+                lst_picape.append(x)
             lst_alugados.remove(x)
 
     lst_dividas.remove(apag)
@@ -1351,7 +1433,7 @@ def gera_multa():
             for y in lst_alugados:
                 if y[4]==x[1]:
                     multa = 0
-                    multa = tempo_atraso*y[6]
+                    multa = (tempo_atraso-x[5])*y[6]
             aux2[4] = multa
             lst_dividas.remove(x)
             lst_dividas.append(aux2)
@@ -1386,6 +1468,86 @@ def ver_dividas():
     
     return
 
+# funcao que verificar restricoes basicas do chassi - sem validacao oficial
+def verif_chassi(num_ch):
+    if len(num_ch)!=17:
+        print('O numero de chassi informado nao contem os 17 caracteres!\n')
+        return 0
+    
+    chassis = []
+    
+    for x in lst_estoque:
+        for y in x:
+            chassis.append(y[4])
+            
+    if num_ch in chassis:
+        print('O chassi ja existe. Confira e tente de novo!\n')
+        return 0
+    
+    return 1
+
+# funcao que atualiza um item cadastrado do sistema
+def att_item():
+    if (len(lst_suv) + len(lst_sedan) + len(lst_hatch) + len(lst_picape))==0:
+        if len(lst_alugados)==0:
+            print('Nao ha itens a serem atualizados. Cadastre alguma coisa antes!\n')
+            return
+    chassis_cadastrados()
+    
+    qual_att = raw_input('Digite o numero de chassi do qual deseja do veiculo do qual deseja atualizar|obs. so eh possivel att valor de diaria e de multa: ')
+    
+    for x in lst_alugados:
+        if x[4]==qual_att:
+            print('O veiculo encontra-se alugado; atualizacao de item indisponivel!\n')
+            return
+    ok = 0    
+    for x in lst_estoque:
+        for y in x:
+            if y[4]==qual_att:
+                ok = 1
+                item = y
+    
+    if ok==0:
+        print('Chassi inexistente!\n')
+        return
+    
+    dados_novos = []
+    
+    dados_novos.append(item[0])
+    dados_novos.append(item[1])
+    dados_novos.append(item[2])
+    dados_novos.append(item[3])
+    dados_novos.append(item[4])
+    try:
+        val = raw_input('Novo valor do aluguel: R$ ')
+        float(val)
+    except ValueError:
+        print('Valor digitado com erros. Cancelando!\n')
+        return
+    dados_novos.append(val)
+    try:
+        val = raw_input('Novo valor da multa: R$ ')
+        float(val)
+    except ValueError:
+        print('Valor digitado com erros. Cancelando!\n')
+        return
+    dados_novos.append(val)
+    
+    if dados_novos[1]=='001':
+        lst_suv.remove(item)
+        lst_suv.append(dados_novos)
+    elif dados_novos[1]=='002':
+        lst_sedan.remove(item)
+        lst_sedan.append(dados_novos)
+    elif dados_novos[1]=='003':
+        lst_hatch.remove(item)
+        lst_hatch.append(dados_novos)
+    elif dados_novos[1]=='004':
+        lst_picape.remove(item)
+        lst_picape.append(item)
+    
+    return
+
 # uma funcao que redireciona alguns armazenamentos para listas especificas          
 def armazena(info, x):
     if x==1:
@@ -1405,11 +1567,12 @@ def armazena(info, x):
 
 # gera um id nao repetido de usuario
 def gera_id_user():
-    x = dobro((len(lst_gerentes) + len(lst_funcionarios) + len(lst_clientes)))
-    while(1):
+    x = dobro((len(lst_gerentes) + len(lst_funcionarios) + len(lst_clientes)) + len(lst_perfispendentes))
+    tag = True
+    while(tag):
         id_user = rd.randint(2,x)
         if not id_user in lst_ids_ativos:
-            break
+            tag = False
 
     lst_ids_ativos.append(id_user)
 
@@ -1544,7 +1707,7 @@ def atualizar_banco():
     
     return
 
-# historico de acesso
+# historico de uso
 def log(username, str_acao):
     arq = open('log_localiza.txt', 'a')
     
